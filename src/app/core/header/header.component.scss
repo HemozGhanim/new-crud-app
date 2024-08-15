@@ -1,0 +1,10 @@
+.sideBar {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  &.expanded {
+    width: 150px;
+  }
+}
