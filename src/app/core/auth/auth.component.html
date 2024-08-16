@@ -1,6 +1,6 @@
 <div class="d-flex full-height align-items-center">
   <div class="form-signin m-auto">
-    <form>
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
       <div class="w-100 d-flex justify-content-center">
         <img
           class="mb-4"
@@ -11,7 +11,9 @@
         />
       </div>
 
-      <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+      <h1 class="h3 mb-3 fw-normal text-center">
+        Please {{ isLogin ? "Login" : "Sign-up" }}
+      </h1>
 
       <div class="form-floating">
         <input
@@ -19,6 +21,7 @@
           class="form-control"
           id="floatingInput"
           placeholder="name@example.com"
+          formControlName="email"
         />
         <label for="floatingInput">Email address</label>
       </div>
@@ -28,22 +31,25 @@
           class="form-control"
           id="floatingPassword"
           placeholder="Password"
+          formControlName="password"
         />
         <label for="floatingPassword">Password</label>
       </div>
-
-      <div class="form-check text-start my-3">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          value="remember-me"
-          id="flexCheckDefault"
-        />
-        <label class="form-check-label" for="flexCheckDefault">
-          Remember me
-        </label>
+      <button
+        class="btn btn-primary w-100 py-2"
+        type="submit"
+        [disabled]="!authForm.valid"
+      >
+        {{ isLogin ? "Login" : "Sign-up" }}
+      </button>
+      <div class="text-center w-100 mt-4">
+        <a
+          class="text-decoration-underline"
+          style="cursor: pointer"
+          (click)="OnToggleAuth()"
+          >{{ isLogin ? "Create Account" : "i have already Account" }}</a
+        >
       </div>
-      <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
     </form>
   </div>
 </div>
