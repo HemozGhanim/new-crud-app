@@ -1,61 +1,7 @@
-<!-- <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">CRUD APP</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            aria-current="page"
-            [routerLink]="['/home']"
-            routerLinkActive="active"
-            >Home</a
-          >
-        </li>
-
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            aria-current="page"
-            [routerLink]="['/users']"
-            routerLinkActive="active"
-            >users</a
-          >
-        </li>
-      </ul>
-      <div class="d-flex" role="search">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              aria-current="page"
-              routerLinkActive="active"
-              [routerLink]="['/auth']"
-              >login | sign-up</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page">logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</nav> -->
 <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sideBar">
   <a
     class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+    [routerLink]="['/']"
   >
     <svg class="bi pe-none me-2" width="40" height="32"></svg>
     <span class="fs-4">CRUD APP</span>
@@ -75,6 +21,7 @@
         Home
       </a>
     </li>
+    @if (isAuth) {
     <li>
       <a
         [routerLink]="['/users']"
@@ -87,6 +34,7 @@
         Users
       </a>
     </li>
+    }
   </ul>
   <hr />
   <div class="dropdown">
@@ -97,22 +45,22 @@
       aria-expanded="false"
     >
       <img
-        src="https://github.com/mdo.png"
+        src="profile-circle.png"
         alt=""
         width="32"
         height="32"
         class="rounded-circle me-2"
       />
-      <strong>mdo</strong>
+      <strong>hemoz</strong>
     </a>
     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+      @if(!isAuth){
       <li>
-        <a class="dropdown-item" [routerLink]="['/auth']">Login</a>
+        <a class="dropdown-item" [routerLink]="['/auth']">Login | Sign up</a>
       </li>
-      <li>
-        <a class="dropdown-item" [routerLink]="['/auth']">Sign up</a>
-      </li>
+      } @else{
       <li><a class="dropdown-item">Sign out</a></li>
+      }
     </ul>
   </div>
 </div>

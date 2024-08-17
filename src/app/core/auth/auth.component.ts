@@ -6,6 +6,8 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs';
 @Component({
   selector: 'app-auth',
   standalone: true,
@@ -21,7 +23,7 @@ export class AuthComponent {
     password: new FormControl(''),
   });
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   OnToggleAuth() {
     this.isLogin = !this.isLogin;
@@ -38,6 +40,11 @@ export class AuthComponent {
         .login(
           this.authForm.value.email as string,
           this.authForm.value.password as string
+        )
+        .pipe(
+          tap(() => {
+            this.router.navigate(['/']);
+          })
         )
         .subscribe({
           next(value) {

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Router } from 'express';
 import { HeaderComponent } from './core/header/header.component';
+import { AuthService } from './core/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,9 @@ import { HeaderComponent } from './core/header/header.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'new-crud-app';
+export class AppComponent implements OnInit {
+  constructor(private authService: AuthService) {}
+  ngOnInit(): void {
+    this.authService.autoLogin();
+  }
 }

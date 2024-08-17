@@ -11,6 +11,7 @@ import { UserModel } from './userModel';
 })
 export class AuthService {
   user = new Subject<AuthData>();
+  authData!: AuthData;
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string) {
@@ -31,5 +32,12 @@ export class AuthService {
           this.user.next(data);
         })
       );
+  }
+
+  autoLogin() {
+    this.authData = JSON.parse(localStorage.getItem('authData')!);
+    if (this.authData) {
+      this.user.next(this.authData);
+    }
   }
 }
