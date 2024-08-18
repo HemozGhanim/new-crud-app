@@ -1,5 +1,10 @@
-<p>home works!</p>
+<div class="p-3">
+  <h1>Weclome</h1>
+  @if (isAuth) {
+  <p>hello Mr: name</p>
+  } @else {
+  <p>you are not Auth , please Sign In ...</p>
+  <button class="btn btn-primary" (click)="toLogin()">login</button>
 
-<hr />
-
-<button class="btn btn-primary">test</button>
+  }
+</div>

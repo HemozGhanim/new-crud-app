@@ -59,7 +59,7 @@
         <a class="dropdown-item" [routerLink]="['/auth']">Login | Sign up</a>
       </li>
       } @else{
-      <li><a class="dropdown-item">Sign out</a></li>
+      <li><a class="dropdown-item" (click)="signOut()">Sign out</a></li>
       }
     </ul>
   </div>
