@@ -3,7 +3,7 @@ export interface AuthData {
   email: string;
   displayName: string;
   idToken: string;
-  registered?: boolean;
+  registered: boolean;
   refreshToken: string;
   expiresIn: string;
 }

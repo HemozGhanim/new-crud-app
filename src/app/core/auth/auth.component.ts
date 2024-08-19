@@ -5,9 +5,11 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
+import { customEmailValidator } from './email.validator';
 @Component({
   selector: 'app-auth',
   standalone: true,
@@ -18,13 +20,38 @@ import { tap } from 'rxjs';
 })
 export class AuthComponent {
   isLogin: boolean = true;
-  authForm = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl(''),
+  authLoginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, customEmailValidator()]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
+  });
+  authSignUpForm = new FormGroup({
+    email: new FormControl('', [Validators.required, customEmailValidator()]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
+    Repassword: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
   });
   value: any = null;
+  showpassword: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  get LoginEmail() {
+    return this.authLoginForm.get('email');
+  }
+  get LoginPassword() {
+    return this.authLoginForm.get('password');
+  }
+  toggleShowPassword() {
+    this.showpassword = !this.showpassword;
+  }
 
   OnToggleAuth() {
     this.isLogin = !this.isLogin;
@@ -33,8 +60,8 @@ export class AuthComponent {
     if (this.isLogin) {
       this.authService
         .login(
-          this.authForm.value.email as string,
-          this.authForm.value.password as string
+          this.authLoginForm.value.email as string,
+          this.authLoginForm.value.password as string
         )
         .pipe(
           tap(() => {
@@ -52,8 +79,8 @@ export class AuthComponent {
     } else {
       this.authService
         .signup(
-          this.authForm.value.email as string,
-          this.authForm.value.password as string
+          this.authSignUpForm.value.email as string,
+          this.authSignUpForm.value.password as string
         )
         .pipe(
           tap(() => {

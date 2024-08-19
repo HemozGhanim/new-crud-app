@@ -22,3 +22,24 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.passwordControl {
+  z-index: 50;
+}
+.showPasswordIcon {
+  position: absolute;
+  top: 15%;
+  right: -9%;
+  display: flex;
+  height: 40px;
+  width: 60px;
+  justify-content: end;
+  align-items: center;
+  z-index: -1;
+  background-color: #ffffff;
+  box-shadow: inset 3px 0px 15px #00000025;
+  border-radius: 0px 20px 20px 0px;
+  -webkit-border-radius: 0px 20px 20px 0px;
+  -moz-border-radius: 0px 20px 20px 0px;
+  -ms-border-radius: 0px 20px 20px 0px;
+  -o-border-radius: 0px 20px 20px 0px;
+}
