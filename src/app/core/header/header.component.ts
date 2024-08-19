@@ -2,11 +2,12 @@ import { AuthService } from './../auth/auth.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { SidebarModule, DropdownModule } from 'ng-cdbangular';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, SidebarModule, DropdownModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
