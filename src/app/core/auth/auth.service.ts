@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 export class AuthService {
   user = new BehaviorSubject<AuthData | null>(null);
   authData!: AuthData;
+  private tokenExpirationTimer: any;
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -51,11 +53,43 @@ export class AuthService {
     }
   }
 
+  signup(email: string, password: string) {
+    let body: UserModel = {
+      email: email,
+      password: password,
+      returnSecureToken: true,
+    };
+    return this.http
+      .post<AuthData>(
+        environment.firebase.signUpDomain +
+          'key=' +
+          environment.firebase.apiKey,
+        body
+      )
+      .pipe(
+        tap((data) => {
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('authData', JSON.stringify(data));
+          }
+          this.user.next(data);
+        })
+      );
+  }
   signOut() {
     if (isPlatformBrowser(this.platformId)) {
       this.user.next(null);
       this.router.navigate(['/auth']);
       localStorage.removeItem('authData');
+      if (this.tokenExpirationTimer) {
+        clearTimeout(this.tokenExpirationTimer);
+      }
+      this.tokenExpirationTimer = null;
     }
+  }
+  autoSignOut(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(
+      () => this.signOut(),
+      expirationDuration
+    );
   }
 }

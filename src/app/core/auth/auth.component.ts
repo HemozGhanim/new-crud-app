@@ -22,6 +22,7 @@ export class AuthComponent {
     email: new FormControl(''),
     password: new FormControl(''),
   });
+  value: any = null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -30,12 +31,6 @@ export class AuthComponent {
   }
   onSubmit() {
     if (this.isLogin) {
-      if (this.authService.user) {
-        console.log('userData');
-      } else {
-        console.log('no user');
-      }
-
       this.authService
         .login(
           this.authForm.value.email as string,
@@ -54,11 +49,21 @@ export class AuthComponent {
             console.log(err);
           },
         });
-      this.authService.user.subscribe((user) => {
-        console.log('user', user);
-      });
     } else {
-      console.log('this is signup model');
+      this.authService
+        .signup(
+          this.authForm.value.email as string,
+          this.authForm.value.password as string
+        )
+        .pipe(
+          tap(() => {
+            this.router.navigate(['/']);
+          })
+        )
+        .subscribe({
+          next(value) {},
+          error(err) {},
+        });
     }
   }
 }
