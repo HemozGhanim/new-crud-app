@@ -1,10 +1,12 @@
 import { AuthService } from './auth.service';
 import { Component } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,7 +21,27 @@ import { customEmailValidator } from './email.validator';
   styleUrl: './auth.component.scss',
 })
 export class AuthComponent {
-  isLogin: boolean = true;
+  isLogin: boolean = false;
+  matched!: boolean | null;
+  value: any = null;
+  showpassword: boolean = false;
+
+  passwordMatchValidator: ValidatorFn = (
+    control: AbstractControl
+  ): { [key: string]: boolean } | null => {
+    const formGroup = control as FormGroup;
+    const password = formGroup.get('password')?.value;
+    const Repassword = formGroup.get('Repassword')?.value;
+
+    if (password !== Repassword) {
+      formGroup.get('Repassword')?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+
+    formGroup.get('Repassword')?.setErrors(null);
+    return null;
+  };
+
   authLoginForm = new FormGroup({
     email: new FormControl('', [Validators.required, customEmailValidator()]),
     password: new FormControl('', [
@@ -27,19 +49,21 @@ export class AuthComponent {
       Validators.minLength(6),
     ]),
   });
-  authSignUpForm = new FormGroup({
-    email: new FormControl('', [Validators.required, customEmailValidator()]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
-    Repassword: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
-  });
-  value: any = null;
-  showpassword: boolean = false;
+
+  authSignUpForm = new FormGroup(
+    {
+      email: new FormControl('', [Validators.required, customEmailValidator()]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+      Repassword: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+    },
+    { validators: this.passwordMatchValidator }
+  );
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -48,6 +72,15 @@ export class AuthComponent {
   }
   get LoginPassword() {
     return this.authLoginForm.get('password');
+  }
+  get SignUpEmail() {
+    return this.authSignUpForm.get('email');
+  }
+  get SignUpPassword() {
+    return this.authSignUpForm.get('password');
+  }
+  get SignUpRePassword() {
+    return this.authSignUpForm.get('Repassword');
   }
   toggleShowPassword() {
     this.showpassword = !this.showpassword;
@@ -93,4 +126,5 @@ export class AuthComponent {
         });
     }
   }
+
 }

@@ -1,3 +1,43 @@
 .main {
+  height: 100vh !important;
+}
+.takePadding {
+  padding-left: 270px;
+}
+mat-sidenav-container {
   height: 100vh;
+}
+
+mat-sidenav {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 250px;
+  background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-sidenav-content {
+  margin-left: 250px; /* Match the width of the sidenav */
+  padding: 16px;
+}
+
+.menu-button {
+  display: none;
+}
+
+.logo {
+  height: 40px;
+  margin-right: 16px;
+}
+
+@media (max-width: 599px) {
+  .menu-button {
+    display: block;
+  }
+
+  mat-sidenav-content {
+    margin-left: 0; /* No margin for small screens */
+  }
 }

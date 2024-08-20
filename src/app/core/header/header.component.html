@@ -1,4 +1,4 @@
-<!-- <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sideBar">
+<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sideBar">
   <a
     class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
     [routerLink]="['/']"
@@ -51,7 +51,7 @@
         height="32"
         class="rounded-circle me-2"
       />
-      <strong>hemoz</strong>
+      <strong>Settings</strong>
     </a>
     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
       @if(!isAuth){
@@ -63,9 +63,12 @@
       }
     </ul>
   </div>
-</div> -->
+</div>
 
-<div class="app" style="display: flex; height: 100vh; position: sticky">
+<!-- <div
+  class="app"
+  style="display: flex; height: 100vh; position: fixed; z-index: 999"
+>
   <CDBSidebar textColor="#ffffff" backgroundColor="#333333">
     <CDBSidebarHeader [prefix]="icon">
       <ng-template #icon>
@@ -78,9 +81,10 @@
     <CDBSidebarContent>
       <CDBSidebarMenu class="sidebar-content">
         <CDBSidebarMenuItem link="/" icon="home"> Home </CDBSidebarMenuItem>
+        @if(isAuth){
         <CDBSidebarMenuItem link="/users" icon="users">
-          Users
-        </CDBSidebarMenuItem>
+          Users </CDBSidebarMenuItem
+        >}
       </CDBSidebarMenu>
     </CDBSidebarContent>
     <div class="mt-auto">
@@ -89,9 +93,9 @@
           class="transColor"
           [caretDropUp]="true"
           (click)="menu4.toggleDropdown($event)"
-          style="width: 100%"
+          style="width: 100%; padding: 15px 5px !important"
         >
-          Danger Toggle Bar
+          Menu
         </CDBDropDownToggle>
         <CDBDropDownMenu
           #menu4="cdbDropdownMenu"
@@ -110,4 +114,4 @@
       </CDBDropDown>
     </div>
   </CDBSidebar>
-</div>
+</div> -->

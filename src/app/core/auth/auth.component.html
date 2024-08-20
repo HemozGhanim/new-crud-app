@@ -45,9 +45,7 @@
           placeholder="Password"
           formControlName="password"
           [class]="{
-            'is-invalid':
-              authLoginForm.get('password')?.invalid &&
-              authLoginForm.get('password')?.touched
+            'is-invalid': LoginPassword?.invalid && LoginPassword?.touched
           }"
         />
         <label for="floatingPassword">Password</label>
@@ -96,7 +94,7 @@
         Please {{ isLogin ? "Login" : "Sign-up" }}
       </h1>
 
-      <div class="form-floating">
+      <div class="form-floating mb-1">
         <input
           type="email"
           class="form-control"
@@ -104,42 +102,85 @@
           placeholder="name@example.com"
           formControlName="email"
           [class]="{
-            'is-invalid':
-              authSignUpForm.get('email')?.invalid &&
-              authSignUpForm.get('email')?.touched
+            'is-invalid': SignUpEmail?.invalid && SignUpEmail?.touched
           }"
         />
-        <label for="floatingInput">Email address</label>
+        <label for="floatingInput ">Email address</label>
+        <div class="invalid-feedback">
+          @if(SignUpEmail?.errors?.['required']){
+          <div class="ps-2 text-capitalize">
+            * Please enter your email address.
+          </div>
+          } @if(SignUpEmail?.errors?.['invalidEmail']){
+          <div class="ps-2 text-capitalize">
+            * Please enter a valid email address.
+          </div>
+          }
+        </div>
       </div>
-      <div class="form-floating">
+      <div class="form-floating passwordControl mb-2">
         <input
-          type="password"
-          class="form-control"
+          [type]="showpassword ? 'text' : 'password'"
+          class="form-control mb-2"
           id="floatingPassword"
           placeholder="Password"
           formControlName="password"
           [class]="{
-            'is-invalid':
-              authSignUpForm.get('password')?.invalid &&
-              authSignUpForm.get('password')?.touched
+            'is-invalid': SignUpPassword?.invalid && SignUpPassword?.touched
           }"
         />
         <label for="floatingPassword">Password</label>
+        <div class="showPasswordIcon p-2">
+          <i
+            class="fa-solid fa-lg"
+            [class]="showpassword ? 'fa-eye' : 'fa-eye-slash'"
+            (click)="toggleShowPassword()"
+          ></i>
+        </div>
+        @if(SignUpPassword?.invalid && SignUpPassword?.touched){
+        <div class="invalid-feedback">
+          @if(SignUpPassword?.errors?.['required']){
+          <div class="ps-2 text-capitalize">* Please enter your password.</div>
+          } @if(SignUpPassword?.errors?.['minlength']){
+          <div class="ps-2 text-capitalize">
+            * password must be 6 charachters or more..
+          </div>
+          }
+        </div>
+        }
       </div>
-      <div class="form-floating">
+      <div class="form-floating passwordControl mb-2">
         <input
-          type="password"
-          class="form-control"
+          [type]="showpassword ? 'text' : 'password'"
+          class="form-control mb-2"
           id="floatingRePassword"
-          placeholder="Password"
+          placeholder="Re-Password"
           formControlName="Repassword"
           [class]="{
-            'is-invalid':
-              authSignUpForm.get('Repassword')?.invalid &&
-              authSignUpForm.get('Repassword')?.touched
+            'is-invalid': SignUpRePassword?.invalid && SignUpRePassword?.touched
           }"
         />
-        <label for="floatingPassword">Re-Password</label>
+        <label for="floatingPassword ">Re-Password</label>
+        <div class="showPasswordIcon p-2">
+          <i
+            class="fa-solid fa-lg"
+            [class]="showpassword ? 'fa-eye' : 'fa-eye-slash'"
+            (click)="toggleShowPassword()"
+          ></i>
+        </div>
+        @if(SignUpRePassword?.invalid && SignUpRePassword?.touched){
+        <div class="invalid-feedback">
+          @if(SignUpRePassword?.errors?.['required']){
+          <div class="ps-2 text-capitalize">* Please enter your password.</div>
+          } @if(SignUpRePassword?.errors?.['minlength']){
+          <div class="ps-2 text-capitalize">
+            * password must be 6 charachters or more..
+          </div>
+          }@if(SignUpRePassword?.hasError('passwordMismatch')){
+          <div class="ps-2 text-capitalize">* password Not Matched</div>
+          }
+        </div>
+        }
       </div>
       <button
         class="btn btn-primary w-100 py-2"
