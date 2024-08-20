@@ -49,5 +49,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.5.2"
+  },
+  "resolutions": {
+    "@angular/common": "18.2.0",
+    "@angular/material": "18.2.0"
   }
 }
