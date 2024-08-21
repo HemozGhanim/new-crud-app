@@ -18,51 +18,116 @@
         </h1>
         <button
           type="button"
-          class="btn-close"
+          class="btn-close text-danger"
           data-bs-dismiss="modal"
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body text-capitalize">
         <form>
-          <div class="mb-3">
-            <label for="idFormControlInput" class="form-label">id</label>
-            <input
-              type="email"
-              class="form-control"
-              id="idFormControlInput"
-              placeholder="name@example.com"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="nameFormControleInput" class="form-label"
-              >UserName</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="nameFormControleInput"
-              placeholder="John Doe"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="emailFormControlInput" class="form-label"
-              >Email address</label
-            >
-            <input
-              type="email"
-              class="form-control"
-              id="emailFormControlInput"
-              placeholder="john@gmail.com"
-            />
+          <div class="row">
+            <div class="mb-3 col col-6">
+              <label for="idFormControlInput" class="form-label">ID</label>
+              <input
+                type="text"
+                class="form-control"
+                id="idFormControlInput"
+                placeholder="01"
+              />
+            </div>
+            <div class="mb-3 col col-6">
+              <label for="nameFormControleInput" class="form-label"
+                >User Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="nameFormControleInput"
+                placeholder="John Doe"
+              />
+            </div>
+            <div class="mb-3 col col-12">
+              <label for="emailFormControlInput" class="form-label"
+                >Email address</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="emailFormControlInput"
+                placeholder="john@gmail.com"
+              />
+            </div>
+            <div class="mb-3 col col-6">
+              <label for="nameFormControleInput" class="form-label"
+                >Frist Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="nameFormControleInput"
+                placeholder="John"
+              />
+            </div>
+            <div class="mb-3 col col-6">
+              <label for="nameFormControleInput" class="form-label"
+                >Last Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="nameFormControleInput"
+                placeholder="Doe"
+              />
+            </div>
+            <div class="mb-3 col col-6">
+              <label for="nameFormControleInput" class="form-label"
+                >Phone</label
+              >
+              <input
+                type="tel"
+                class="form-control"
+                id="nameFormControleInput"
+                placeholder="John Doe"
+              />
+            </div>
+            <div class="mb-3 col col-6">
+              <label for="nameFormControleInput" class="form-label"
+                >Gender</label
+              >
+              <div class="pt-2">
+                <div class="form-check d-inline-block">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    id="flexRadioDefault1"
+                  />
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Male
+                  </label>
+                </div>
+                <div class="form-check d-inline-block ms-3">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    id="flexRadioDefault2"
+                    checked
+                  />
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    Female
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
           Close
         </button>
-        <button type="submit" class="btn btn-primary">Understood</button>
+        <button type="submit" class="btn btn-primary">Create</button>
       </div>
     </div>
   </div>

@@ -23,21 +23,47 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./core/users/users.component').then((m) => m.UsersComponent),
     canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./core/user-view/user-view.component').then(
+            (m) => m.UserViewComponent
+          ),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./core/user-component/user-component.component').then(
+            (m) => m.UserComponentComponent
+          ),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: ':id/edit',
+        loadComponent: () =>
+          import(
+            './core/user-edit-component/user-edit-component.component'
+          ).then((m) => m.UserEditComponentComponent),
+        canActivate: [AuthGuard],
+      },
+    ],
   },
-  {
-    path: 'users/:id',
-    loadComponent: () =>
-      import('./core/user-component/user-component.component').then(
-        (m) => m.UserComponentComponent
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: ':id/edit',
-    loadComponent: () =>
-      import('./core/user-edit-component/user-edit-component.component').then(
-        (m) => m.UserEditComponentComponent
-      ),
-    canActivate: [AuthGuard],
-  },
+  // {
+  //   path: 'users/:id',
+  //   loadComponent: () =>
+  //     import('./core/user-component/user-component.component').then(
+  //       (m) => m.UserComponentComponent
+  //     ),
+  //   canActivate: [AuthGuard],
+  // },
+  // {
+  //   path: ':id/edit',
+  //   loadComponent: () =>
+  //     import('./core/user-edit-component/user-edit-component.component').then(
+  //       (m) => m.UserEditComponentComponent
+  //     ),
+  //   canActivate: [AuthGuard],
+  // },
 ];
