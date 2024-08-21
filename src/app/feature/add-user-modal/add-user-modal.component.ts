@@ -40,6 +40,7 @@ export class AddUserModalComponent {
         User_Name: this.createUserData.value.User_Name!,
       })
       .subscribe((data) => {
+        this.usersService.getUsers().subscribe();
         console.log(data);
       });
     console.log(this.createUserData.value);

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { userCreationData } from '../../shared/userData.model';
 
 @Component({
   selector: 'app-user-card',
@@ -8,5 +9,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './user-card.component.scss',
 })
 export class UserCardComponent {
-  @Input('userData') user: any;
+  @Input('userData') user!: userCreationData;
 }

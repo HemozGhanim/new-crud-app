@@ -4,12 +4,13 @@ import { environment } from '../../../environments/environment.development';
 import { BehaviorSubject, Subscription, tap } from 'rxjs';
 import { userCreationData } from '../../shared/userData.model';
 
+
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
   constructor(private http: HttpClient) {}
-  users = new BehaviorSubject<userCreationData[] | null>(null);
+  users = new BehaviorSubject<userCreationData | null>(null);
 
   createUser(user: userCreationData) {
     return this.http
@@ -23,10 +24,11 @@ export class UsersService {
 
   getUsers() {
     return this.http
-      .get<userCreationData[]>(environment.databaseURL + 'users.json')
+      .get<userCreationData>(environment.databaseURL + 'users.json')
       .pipe(
         tap((data) => {
           this.users.next(data);
+          console.log(typeof data);
         })
       );
   }
