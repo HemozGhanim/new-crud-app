@@ -2,13 +2,13 @@ import { AuthService } from './../auth/auth.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SidebarModule, DropdownModule } from 'ng-cdbangular';
+// import { SidebarModule, DropdownModule } from 'ng-cdbangular';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, SidebarModule, DropdownModule, MatSidenavModule],
+  imports: [RouterModule, MatSidenavModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
