@@ -32,7 +32,7 @@ export class AuthService {
 
     return this.http
       .post<AuthData>(
-        environment.firebase.authDomain + 'key=' + environment.firebase.apiKey,
+        environment.authDomain + 'key=' + environment.apiKey,
         body
       )
       .pipe(
@@ -69,9 +69,7 @@ export class AuthService {
     };
     return this.http
       .post<AuthData>(
-        environment.firebase.signUpDomain +
-          'key=' +
-          environment.firebase.apiKey,
+        environment.signUpDomain + 'key=' + environment.apiKey,
         body
       )
       .pipe(
