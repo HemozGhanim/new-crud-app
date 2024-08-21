@@ -21,6 +21,8 @@ import { customEmailValidator } from './email.validator';
   styleUrl: './auth.component.scss',
 })
 export class AuthComponent {
+  constructor(private authService: AuthService, private router: Router) {}
+
   isLogin: boolean = false;
   matched!: boolean | null;
   value: any = null;
@@ -64,8 +66,6 @@ export class AuthComponent {
     },
     { validators: this.passwordMatchValidator }
   );
-
-  constructor(private authService: AuthService, private router: Router) {}
 
   get LoginEmail() {
     return this.authLoginForm.get('email');

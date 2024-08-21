@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
+import { UsersService } from './core/user-pages/users.service';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +34,8 @@ export class AppComponent implements OnInit {
   isSmallScreen: boolean = false;
   constructor(
     private authService: AuthService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private usersService: UsersService
   ) {}
   private _formBuilder = inject(FormBuilder);
   options = this._formBuilder.group({
@@ -48,6 +50,8 @@ export class AppComponent implements OnInit {
       .subscribe((result) => {
         this.isSmallScreen = result.matches;
       });
+
+    this.usersService.getUsers().subscribe();
   }
   toggleSidenav() {
     this.sidenav.toggle();

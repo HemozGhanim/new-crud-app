@@ -24,14 +24,15 @@
         ></button>
       </div>
       <div class="modal-body text-capitalize">
-        <form>
+        <form [formGroup]="createUserData">
           <div class="row">
             <div class="mb-3 col col-6">
               <label for="idFormControlInput" class="form-label">ID</label>
               <input
                 type="text"
                 class="form-control"
-                id="idFormControlInput"
+                formControlName="id"
+                id="userid"
                 placeholder="01"
               />
             </div>
@@ -42,7 +43,8 @@
               <input
                 type="text"
                 class="form-control"
-                id="nameFormControleInput"
+                id="userName"
+                formControlName="User_Name"
                 placeholder="John Doe"
               />
             </div>
@@ -53,8 +55,9 @@
               <input
                 type="email"
                 class="form-control"
-                id="emailFormControlInput"
+                id="user-email"
                 placeholder="john@gmail.com"
+                formControlName="email"
               />
             </div>
             <div class="mb-3 col col-6">
@@ -64,8 +67,9 @@
               <input
                 type="text"
                 class="form-control"
-                id="nameFormControleInput"
+                id="user_frist_name"
                 placeholder="John"
+                formControlName="First_Name"
               />
             </div>
             <div class="mb-3 col col-6">
@@ -75,8 +79,9 @@
               <input
                 type="text"
                 class="form-control"
-                id="nameFormControleInput"
+                id="user_Last_Name"
                 placeholder="Doe"
+                formControlName="Last_Name"
               />
             </div>
             <div class="mb-3 col col-6">
@@ -86,8 +91,9 @@
               <input
                 type="tel"
                 class="form-control"
-                id="nameFormControleInput"
-                placeholder="John Doe"
+                id="user_Phone_Number"
+                placeholder="01099554648"
+                formControlName="Phone_Number"
               />
             </div>
             <div class="mb-3 col col-6">
@@ -99,10 +105,12 @@
                   <input
                     class="form-check-input"
                     type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault1"
+                    name="gender"
+                    formControlName="gender"
+                    id="MaleGender"
+                    value="male"
                   />
-                  <label class="form-check-label" for="flexRadioDefault1">
+                  <label class="form-check-label" for="MaleGender">
                     Male
                   </label>
                 </div>
@@ -110,11 +118,12 @@
                   <input
                     class="form-check-input"
                     type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault2"
-                    checked
+                    name="gender"
+                    formControlName="gender"
+                    id="FemaleGender"
+                    value="female"
                   />
-                  <label class="form-check-label" for="flexRadioDefault2">
+                  <label class="form-check-label" for="FemaleGender">
                     Female
                   </label>
                 </div>
@@ -124,10 +133,17 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="clearData()"
+        >
           Close
         </button>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary" (click)="createData()">
+          Create
+        </button>
       </div>
     </div>
   </div>

@@ -9,7 +9,6 @@
       <h1 class="h3 mb-3 fw-normal text-center">
         Please {{ isLogin ? "Login" : "Sign-up" }}
       </h1>
-
       <div class="form-floating my-1">
         <input
           type="email"
@@ -98,8 +97,9 @@
         <input
           type="email"
           class="form-control"
-          id="floatingInput"
+          id="floatingInput1"
           placeholder="name@example.com"
+          autocomplete="email"
           formControlName="email"
           [class]="{
             'is-invalid': SignUpEmail?.invalid && SignUpEmail?.touched
@@ -122,9 +122,10 @@
         <input
           [type]="showpassword ? 'text' : 'password'"
           class="form-control mb-2"
-          id="floatingPassword"
+          id="floatingPassword2"
           placeholder="Password"
           formControlName="password"
+          autocomplete="new-password"
           [class]="{
             'is-invalid': SignUpPassword?.invalid && SignUpPassword?.touched
           }"
@@ -156,6 +157,7 @@
           id="floatingRePassword"
           placeholder="Re-Password"
           formControlName="Repassword"
+          autocomplete="new-password"
           [class]="{
             'is-invalid': SignUpRePassword?.invalid && SignUpRePassword?.touched
           }"

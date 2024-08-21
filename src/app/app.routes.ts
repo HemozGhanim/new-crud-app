@@ -21,13 +21,13 @@ export const routes: Routes = [
   {
     path: 'users',
     loadComponent: () =>
-      import('./core/users/users.component').then((m) => m.UsersComponent),
+      import('./core/user-pages/users.component').then((m) => m.UsersComponent),
     canActivate: [AuthGuard],
     children: [
       {
         path: '',
         loadComponent: () =>
-          import('./core/user-view/user-view.component').then(
+          import('./core/user-pages/user-view/user-view.component').then(
             (m) => m.UserViewComponent
           ),
         canActivate: [AuthGuard],
@@ -35,16 +35,16 @@ export const routes: Routes = [
       {
         path: ':id',
         loadComponent: () =>
-          import('./core/user-component/user-component.component').then(
-            (m) => m.UserComponentComponent
-          ),
+          import(
+            './core/user-pages/user-component/user-component.component'
+          ).then((m) => m.UserComponentComponent),
         canActivate: [AuthGuard],
       },
       {
         path: ':id/edit',
         loadComponent: () =>
           import(
-            './core/user-edit-component/user-edit-component.component'
+            './core/user-pages/user-edit-component/user-edit-component.component'
           ).then((m) => m.UserEditComponentComponent),
         canActivate: [AuthGuard],
       },
