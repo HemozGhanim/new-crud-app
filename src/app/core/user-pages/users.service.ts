@@ -1,7 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { BehaviorSubject, Subscription, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  map,
+  Observable,
+  OperatorFunction,
+  Subscription,
+  tap,
+} from 'rxjs';
 import { userCreationData } from '../../shared/userData.model';
 
 @Injectable({
@@ -25,5 +33,10 @@ export class UsersService {
           this.users.next(data);
         })
       );
+  }
+
+  getUserById(id: any) {
+    // console.log(this.users.value);
+    return this.users.pipe();
   }
 }
