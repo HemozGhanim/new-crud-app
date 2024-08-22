@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { Component } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -10,7 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { catchError, tap } from 'rxjs';
 import { customEmailValidator } from './email.validator';
 @Component({
   selector: 'app-auth',
@@ -21,12 +21,21 @@ import { customEmailValidator } from './email.validator';
   styleUrl: './auth.component.scss',
 })
 export class AuthComponent {
+  //constructor
   constructor(private authService: AuthService, private router: Router) {}
 
-  isLogin: boolean = false;
+  //variables
+  isLogin: boolean = true;
+  loading: boolean = false;
   matched!: boolean | null;
   value: any = null;
-  showpassword: boolean = false;
+  // LoginpasswordInputValue: string = '';
+  // SignUpPasswordInputValue: string = '';
+  // SignUpRePasswordInputValue: string = '';
+  showLoginPassword: boolean = false;
+  showSignUpPassword: boolean = false;
+  showSignUpRePassword: boolean = false;
+  errorMessage: string = '';
 
   passwordMatchValidator: ValidatorFn = (
     control: AbstractControl
@@ -82,8 +91,14 @@ export class AuthComponent {
   get SignUpRePassword() {
     return this.authSignUpForm.get('Repassword');
   }
-  toggleShowPassword() {
-    this.showpassword = !this.showpassword;
+  togglePasswordVisibility(field: string) {
+    if (field === 'LoginPassword') {
+      this.showLoginPassword = !this.showLoginPassword;
+    } else if (field === 'SignUpPassword') {
+      this.showSignUpPassword = !this.showSignUpPassword;
+    } else if (field === 'SignUpRePassword') {
+      this.showSignUpRePassword = !this.showSignUpRePassword;
+    }
   }
 
   OnToggleAuth() {
@@ -91,6 +106,7 @@ export class AuthComponent {
   }
   onSubmit() {
     if (this.isLogin) {
+      this.loading = true;
       this.authService
         .login(
           this.authLoginForm.value.email as string,
@@ -98,7 +114,12 @@ export class AuthComponent {
         )
         .pipe(
           tap(() => {
+            this.loading = false;
             this.router.navigate(['/']);
+          }),
+          catchError((error) => {
+            this.loading = false;
+            throw error;
           })
         )
         .subscribe({

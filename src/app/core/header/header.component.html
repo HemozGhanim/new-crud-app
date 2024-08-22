@@ -1,4 +1,4 @@
-<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sideBar">
+<!-- <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sideBar">
   <a
     class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
     [routerLink]="['/']"
@@ -63,55 +63,79 @@
       }
     </ul>
   </div>
-</div>
-
-<!-- <div
-  class="app"
-  style="display: flex; height: 100vh; position: fixed; z-index: 999"
->
-  <CDBSidebar textColor="#ffffff" backgroundColor="#333333">
-    <CDBSidebarHeader [prefix]="icon">
-      <ng-template #icon>
-        <i class="fa fa-bars fa-large"></i>
-      </ng-template>
-
-      CRUD APP
-    </CDBSidebarHeader>
-
-    <CDBSidebarContent>
-      <CDBSidebarMenu class="sidebar-content">
-        <CDBSidebarMenuItem link="/" icon="home"> Home </CDBSidebarMenuItem>
-        @if(isAuth){
-        <CDBSidebarMenuItem link="/users" icon="users">
-          Users </CDBSidebarMenuItem
-        >}
-      </CDBSidebarMenu>
-    </CDBSidebarContent>
-    <div class="mt-auto">
-      <CDBDropDown>
-        <CDBDropDownToggle
-          class="transColor"
-          [caretDropUp]="true"
-          (click)="menu4.toggleDropdown($event)"
-          style="width: 100%; padding: 15px 5px !important"
-        >
-          Menu
-        </CDBDropDownToggle>
-        <CDBDropDownMenu
-          #menu4="cdbDropdownMenu"
-          placement="top"
-          class="w-100 py-0"
-          >@if(isAuth){
-          <CDBSidebarMenuItem (click)="signOut()" icon="home">
-            sign-Out
-          </CDBSidebarMenuItem>
-          } @else {
-          <CDBSidebarMenuItem link="/auth" icon="add-account">
-            Login | sign-up
-          </CDBSidebarMenuItem>
-          }
-        </CDBDropDownMenu>
-      </CDBDropDown>
-    </div>
-  </CDBSidebar>
 </div> -->
+
+<div
+  class="d-flex h-100 flex-column align-items-center align-items-sm-start overflow-x-hidden z-3 px-3 pt-2 text-white pt-4 position-relative"
+  #sideBar
+>
+  <a
+    [routerLink]="['/']"
+    class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+  >
+    <i class="fs-3 fa-solid bi-speedometer2"></i>
+    <span class="fs-5 ms-md-2 d-none d-sm-inline">CRUD APP</span>
+  </a>
+  <ul
+    class="nav nav-pills w-100 flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+    id="menu"
+  >
+    <li class="nav-item w-100">
+      <a
+        [routerLink]="['/home']"
+        class="nav-link align-middle px-0 px-2 ps-md-3"
+        routerLinkActive="active"
+      >
+        <i class="fs-4 bi-house"></i>
+        <span class="ms-md-2 d-none d-sm-inline">Home</span>
+      </a>
+    </li>
+    @if (isAuth) {
+    <li class="nav-item w-100">
+      <a
+        [routerLink]="['/users']"
+        routerLinkActive="active"
+        class="nav-link px-0 align-middle px-2 ps-md-3"
+      >
+        <i class="fs-4 bi-people"></i>
+        <span class="ms-2 d-none d-sm-inline">Users</span>
+      </a>
+    </li>
+    }
+  </ul>
+
+  <hr />
+  <div class="dropdown position-absolute bottom-0 pb-4 toZindexMenu">
+    <a
+      href="#"
+      class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+      id="dropdownUser1"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <img
+        src="profile-circle.png"
+        alt="hugenerd"
+        width="30"
+        height="30"
+        class="rounded-circle"
+      />
+      <span class="d-none d-sm-inline mx-1">Settings</span>
+    </a>
+    <ul
+      class="dropdown-menu dropdown-menu-dark text-small shadow"
+      aria-labelledby="dropdownUser1"
+    >
+      @if(!isAuth){
+      <li>
+        <a class="dropdown-item" [routerLink]="['/auth']">Login | Sign up</a>
+      </li>
+
+      } @else {
+
+      <li><a class="dropdown-item" (click)="signOut()">Sign out</a></li>
+
+      }
+    </ul>
+  </div>
+</div>

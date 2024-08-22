@@ -1,6 +1,14 @@
-<div class="d-flex flex-nowrap main">
-  <app-header></app-header>
-  <div class="w-100">
-    <router-outlet></router-outlet>
+<div class="">
+  <div class="row flex-nowrap">
+    <app-header
+      class="col-2 col-md-3 col-xl-2 px-0 e-sidebar bg-dark"
+      (sideBarWidth)="handleSideBarWidth($event)"
+    ></app-header>
+    <div
+      class="col-10 col-md-9 col-xl-10 p-0 main-content"
+      [style.margin-left.px]="sideBarWidth"
+    >
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

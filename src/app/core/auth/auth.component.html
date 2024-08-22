@@ -13,7 +13,8 @@
         <input
           type="email"
           class="form-control"
-          id="floatingInput"
+          id="LoginEmail"
+          autocomplete="email"
           placeholder="name@example.com"
           formControlName="email"
           [class]="{
@@ -38,11 +39,12 @@
       </div>
       <div class="form-floating passwordControl mb-2">
         <input
-          [type]="showpassword ? 'text' : 'password'"
+          [type]="showLoginPassword ? 'text' : 'password'"
           class="form-control mb-2"
-          id="floatingPassword"
+          id="LoginPassword"
           placeholder="Password"
           formControlName="password"
+          #passwordInput
           [class]="{
             'is-invalid': LoginPassword?.invalid && LoginPassword?.touched
           }"
@@ -51,8 +53,8 @@
         <div class="showPasswordIcon p-2">
           <i
             class="fa-solid fa-lg"
-            [class]="showpassword ? 'fa-eye' : 'fa-eye-slash'"
-            (click)="toggleShowPassword()"
+            [class]="showLoginPassword ? 'fa-eye' : 'fa-eye-slash'"
+            (click)="togglePasswordVisibility('LoginPassword')"
           ></i>
         </div>
         @if(LoginPassword?.invalid && LoginPassword?.touched){
@@ -72,7 +74,11 @@
         type="submit"
         [disabled]="!authLoginForm.valid"
       >
+        @if (loading) {
+        <i class="fa-solid fa-spinner"></i>
+        } @else {
         {{ isLogin ? "Login" : "Sign-up" }}
+        }
       </button>
       <div class="text-center w-100 mt-4">
         <a
@@ -97,7 +103,7 @@
         <input
           type="email"
           class="form-control"
-          id="floatingInput1"
+          id="SignUpEmail"
           placeholder="name@example.com"
           autocomplete="email"
           formControlName="email"
@@ -120,11 +126,12 @@
       </div>
       <div class="form-floating passwordControl mb-2">
         <input
-          [type]="showpassword ? 'text' : 'password'"
+          [type]="showSignUpPassword ? 'text' : 'password'"
           class="form-control mb-2"
-          id="floatingPassword2"
+          id="SignUpPassword"
           placeholder="Password"
           formControlName="password"
+          #passwordInput
           autocomplete="new-password"
           [class]="{
             'is-invalid': SignUpPassword?.invalid && SignUpPassword?.touched
@@ -134,8 +141,8 @@
         <div class="showPasswordIcon p-2">
           <i
             class="fa-solid fa-lg"
-            [class]="showpassword ? 'fa-eye' : 'fa-eye-slash'"
-            (click)="toggleShowPassword()"
+            [class]="showSignUpPassword ? 'fa-eye' : 'fa-eye-slash'"
+            (click)="togglePasswordVisibility('SignUpPassword')"
           ></i>
         </div>
         @if(SignUpPassword?.invalid && SignUpPassword?.touched){
@@ -152,11 +159,12 @@
       </div>
       <div class="form-floating passwordControl mb-2">
         <input
-          [type]="showpassword ? 'text' : 'password'"
+          [type]="showSignUpRePassword ? 'text' : 'password'"
           class="form-control mb-2"
-          id="floatingRePassword"
+          id="SignUpRePassword"
           placeholder="Re-Password"
           formControlName="Repassword"
+          #passwordInput
           autocomplete="new-password"
           [class]="{
             'is-invalid': SignUpRePassword?.invalid && SignUpRePassword?.touched
@@ -166,8 +174,8 @@
         <div class="showPasswordIcon p-2">
           <i
             class="fa-solid fa-lg"
-            [class]="showpassword ? 'fa-eye' : 'fa-eye-slash'"
-            (click)="toggleShowPassword()"
+            [class]="showSignUpRePassword ? 'fa-eye' : 'fa-eye-slash'"
+            (click)="togglePasswordVisibility('SignUpRePassword')"
           ></i>
         </div>
         @if(SignUpRePassword?.invalid && SignUpRePassword?.touched){

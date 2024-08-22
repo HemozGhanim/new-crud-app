@@ -4,7 +4,6 @@ import { environment } from '../../../environments/environment.development';
 import { BehaviorSubject, Subscription, tap } from 'rxjs';
 import { userCreationData } from '../../shared/userData.model';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -15,11 +14,7 @@ export class UsersService {
   createUser(user: userCreationData) {
     return this.http
       .post<userCreationData>(environment.databaseURL + 'users.json', user)
-      .pipe(
-        tap((data) => {
-          console.log('User created:', data);
-        })
-      );
+      .pipe(tap((data) => {}));
   }
 
   getUsers() {
@@ -28,7 +23,6 @@ export class UsersService {
       .pipe(
         tap((data) => {
           this.users.next(data);
-          console.log(typeof data);
         })
       );
   }

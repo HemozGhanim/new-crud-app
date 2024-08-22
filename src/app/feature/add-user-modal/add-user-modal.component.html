@@ -34,7 +34,22 @@
                 formControlName="id"
                 id="userid"
                 placeholder="01"
+                [class]="{
+                  'is-invalid':
+                    userid.invalid && (userid.dirty || userid.touched)
+                }"
               />
+              @if(userid.invalid && userid.touched){
+              <div class="invalid-feedback">
+                @if(userid.errors?.['required']){
+                <div class="ps-2 text-capitalize">* Please enter user id.</div>
+                } @if(userid.errors?.['pattern']){
+                <div class="ps-2 text-capitalize">
+                  * Please enter numbers only.
+                </div>
+                }
+              </div>
+              }
             </div>
             <div class="mb-3 col col-6">
               <label for="nameFormControleInput" class="form-label"
@@ -46,7 +61,28 @@
                 id="userName"
                 formControlName="User_Name"
                 placeholder="John Doe"
+                [class]="{
+                  'is-invalid':
+                    userName.invalid && (userName.dirty || userName.touched)
+                }"
               />
+              @if(userName.invalid && userName.touched){
+              <div class="invalid-feedback">
+                @if(userName.errors?.['required']){
+                <div class="ps-2 text-capitalize">
+                  * Please enter user Name.
+                </div>
+                } @if(userName.errors?.['minlength']){
+                <div class="ps-2 text-capitalize">
+                  * min Length is 3 characters.
+                </div>
+                } @if(userName.errors?.['maxlength']){
+                <div class="ps-2 text-capitalize">
+                  * max Length is 50 characters.
+                </div>
+                }
+              </div>
+              }
             </div>
             <div class="mb-3 col col-12">
               <label for="emailFormControlInput" class="form-label"
@@ -58,7 +94,23 @@
                 id="user-email"
                 placeholder="john@gmail.com"
                 formControlName="email"
+                [class]="{
+                  'is-invalid': email.invalid && (email.dirty || email.touched)
+                }"
               />
+              @if(email.invalid && email.touched){
+              <div class="invalid-feedback">
+                @if(email.errors?.['required']){
+                <div class="ps-2 text-capitalize">
+                  * Please enter your email address.
+                </div>
+                } @if(email.errors?.['invalidEmail']){
+                <div class="ps-2 text-capitalize">
+                  * Please enter a valid email address.
+                </div>
+                }
+              </div>
+              }
             </div>
             <div class="mb-3 col col-6">
               <label for="nameFormControleInput" class="form-label"
@@ -70,7 +122,28 @@
                 id="user_frist_name"
                 placeholder="John"
                 formControlName="First_Name"
+                [class]="{
+                  'is-invalid':
+                    firstName.invalid && (firstName.dirty || firstName.touched)
+                }"
               />
+              @if(firstName.invalid && firstName.touched){
+              <div class="invalid-feedback">
+                @if(firstName.errors?.['required']){
+                <div class="ps-2 text-capitalize">
+                  * Please enter First Name.
+                </div>
+                } @if(firstName.errors?.['minlength']){
+                <div class="ps-2 text-capitalize">
+                  * min Length is 3 characters.
+                </div>
+                } @if(firstName.errors?.['maxlength']){
+                <div class="ps-2 text-capitalize">
+                  * max Length is 50 characters.
+                </div>
+                }
+              </div>
+              }
             </div>
             <div class="mb-3 col col-6">
               <label for="nameFormControleInput" class="form-label"
@@ -82,7 +155,28 @@
                 id="user_Last_Name"
                 placeholder="Doe"
                 formControlName="Last_Name"
+                [class]="{
+                  'is-invalid':
+                    lastName.invalid && (lastName.dirty || lastName.touched)
+                }"
               />
+              @if(lastName.invalid && lastName.touched){
+              <div class="invalid-feedback">
+                @if(lastName.errors?.['required']){
+                <div class="ps-2 text-capitalize">
+                  * Please enter Last Name.
+                </div>
+                } @if(lastName.errors?.['minlength']){
+                <div class="ps-2 text-capitalize">
+                  * min Length is 3 characters.
+                </div>
+                } @if(lastName.errors?.['maxlength']){
+                <div class="ps-2 text-capitalize">
+                  * max Length is 50 characters.
+                </div>
+                }
+              </div>
+              }
             </div>
             <div class="mb-3 col col-6">
               <label for="nameFormControleInput" class="form-label"
@@ -94,7 +188,25 @@
                 id="user_Phone_Number"
                 placeholder="01099554648"
                 formControlName="Phone_Number"
+                [class]="{
+                  'is-invalid':
+                    phoneNumber.invalid &&
+                    (phoneNumber.dirty || phoneNumber.touched)
+                }"
               />
+              @if(phoneNumber.invalid && phoneNumber.touched){
+              <div class="invalid-feedback">
+                @if(phoneNumber.errors?.['required']){
+                <div class="ps-2 text-capitalize">
+                  * Please enter Phone Number.
+                </div>
+                } @if(phoneNumber.errors?.['pattern']){
+                <div class="ps-2 text-capitalize">
+                  * enter valid phone number.
+                </div>
+                }
+              </div>
+              }
             </div>
             <div class="mb-3 col col-6">
               <label for="nameFormControleInput" class="form-label"
@@ -109,6 +221,10 @@
                     formControlName="gender"
                     id="MaleGender"
                     value="male"
+                    [class]="{
+                      'is-invalid':
+                        gender.invalid && (gender.dirty || gender.touched)
+                    }"
                   />
                   <label class="form-check-label" for="MaleGender">
                     Male
@@ -122,11 +238,18 @@
                     formControlName="gender"
                     id="FemaleGender"
                     value="female"
+                    [class]="{
+                      'is-invalid':
+                        gender.invalid && (gender.dirty || phoneNumber.touched)
+                    }"
                   />
                   <label class="form-check-label" for="FemaleGender">
                     Female
                   </label>
                 </div>
+                @if(gender.errors?.['required']){
+                <div class="ps-2 text-capitalize">* Please user Gender.</div>
+                }
               </div>
             </div>
           </div>
@@ -141,7 +264,12 @@
         >
           Close
         </button>
-        <button type="submit" class="btn btn-primary" (click)="createData()">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="createData()"
+          [disabled]="this.createUserData.invalid"
+        >
           Create
         </button>
       </div>

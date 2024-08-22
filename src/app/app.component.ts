@@ -1,16 +1,9 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './core/header/header.component';
 import { AuthService } from './core/auth/auth.service';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSidenav } from '@angular/material/sidenav';
-import { FormBuilder } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatListModule } from '@angular/material/list';
 import { UsersService } from './core/user-pages/users.service';
 
 @Component({
@@ -18,31 +11,18 @@ import { UsersService } from './core/user-pages/users.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    HeaderComponent,
-    CommonModule,
-    MatSidenavModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatListModule,
-  ],
+  imports: [RouterOutlet, HeaderComponent, CommonModule],
 })
 export class AppComponent implements OnInit {
-  @ViewChild(MatSidenav) sidenav!: MatSidenav;
   isSmallScreen: boolean = false;
+  sideBarWidth!: number;
+  //constructor
   constructor(
     private authService: AuthService,
     private breakpointObserver: BreakpointObserver,
     private usersService: UsersService
   ) {}
-  private _formBuilder = inject(FormBuilder);
-  options = this._formBuilder.group({
-    bottom: 0,
-    fixed: true,
-    top: 0,
-  });
+
   ngOnInit(): void {
     this.authService.autoLogin();
     this.breakpointObserver
@@ -50,10 +30,9 @@ export class AppComponent implements OnInit {
       .subscribe((result) => {
         this.isSmallScreen = result.matches;
       });
-
     this.usersService.getUsers().subscribe();
   }
-  toggleSidenav() {
-    this.sidenav.toggle();
+  handleSideBarWidth(sideBarChildWidth: number) {
+    this.sideBarWidth = sideBarChildWidth;
   }
 }

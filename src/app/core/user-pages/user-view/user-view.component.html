@@ -15,9 +15,9 @@
       Add <i class="fa-sharp fa-solid fa-plus"></i>
     </button>
   </div>
-  <div class="row p-2">
+  <div class="row p-2 ">
     @for (user of users; track $index) {
-    <div class="col col-lg-3">
+    <div class="col col-lg-3 my-2">
       <app-user-card
         [userData]="user"
         (click)="OnClickUser(user.id)"

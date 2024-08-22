@@ -41,3 +41,15 @@ mat-sidenav-content {
     margin-left: 0; /* No margin for small screens */
   }
 }
+
+.main-content {
+  margin-left: 50px; /* Adjust this value based on your sidebar width */
+}
+.e-sidebar {
+  height: 100%;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+}
