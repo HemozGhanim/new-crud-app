@@ -6,6 +6,7 @@
   tabindex="-1"
   aria-labelledby="staticBackdropLabel"
   aria-hidden="true"
+  #modal
 >
   <div class="modal-dialog">
     <div class="modal-content">
@@ -28,17 +29,23 @@
           <div class="row">
             <div class="mb-3 col col-6">
               <label for="idFormControlInput" class="form-label">ID</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="id"
-                id="userid"
-                placeholder="01"
-                [class]="{
-                  'is-invalid':
-                    userid.invalid && (userid.dirty || userid.touched)
-                }"
-              />
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">N-</span>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="id"
+                  id="userid"
+                  aria-describedby="basic-addon1"
+                  placeholder="01"
+                  (input)="checkId()"
+                  [class]="{
+                    'is-invalid':
+                      userid.invalid && (userid.dirty || userid.touched)
+                  }"
+                />
+              </div>
+
               @if(userid.invalid && userid.touched){
               <div class="invalid-feedback">
                 @if(userid.errors?.['required']){
@@ -256,14 +263,12 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-danger"
-          data-bs-dismiss="modal"
-          (click)="clearData()"
-        >
+        <!-- data-bs-dismiss="modal" -->
+
+        <button type="button" class="btn btn-danger" (click)="clearData()">
           Close
         </button>
+
         <button
           type="submit"
           class="btn btn-primary"

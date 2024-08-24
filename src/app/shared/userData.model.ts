@@ -1,5 +1,5 @@
 export interface userCreationData {
-  id: number;
+  id: string;
   User_Name: string;
   email: string;
   First_Name: string;

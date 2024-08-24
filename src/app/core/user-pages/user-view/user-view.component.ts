@@ -28,7 +28,7 @@ export class UserViewComponent implements OnInit, OnDestroy {
       },
     });
   }
-  OnClickUser(userId: number) {
+  OnClickUser(userId: string) {
     this.router.navigate(['users', userId]);
   }
   ngOnDestroy(): void {
