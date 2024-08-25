@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -10,8 +10,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { catchError, tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { customEmailValidator } from './email.validator';
+import { PlaceHolderDirective } from '../../shared/placeholder/placeholder.directive';
+import { AlertComponent } from '../../shared/alert/alert.component';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-auth',
   standalone: true,
@@ -22,7 +26,16 @@ import { customEmailValidator } from './email.validator';
 })
 export class AuthComponent {
   //constructor
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
+
+  //placeHolderCreation
+  @ViewChild(PlaceHolderDirective, { static: true })
+  alertHost!: PlaceHolderDirective;
+  private closeAlertSub!: Subscription;
 
   //variables
   isLogin: boolean = true;
@@ -112,22 +125,16 @@ export class AuthComponent {
           this.authLoginForm.value.email as string,
           this.authLoginForm.value.password as string
         )
-        .pipe(
-          tap(() => {
-            this.loading = false;
-            this.router.navigate(['/']);
-          }),
-          catchError((error) => {
-            this.loading = false;
-            throw error;
-          })
-        )
         .subscribe({
-          next(value) {
-            console.log(value);
+          next: (value) => {
+            this.loading = false;
+            this.toastr.success('Login Successfuly');
+            this.router.navigate(['/']);
           },
-          error(err) {
+          error: (err) => {
+            this.loading = false;
             console.log(err);
+            this.toastr.error(err);
           },
         });
     } else {
@@ -145,6 +152,26 @@ export class AuthComponent {
           next(value) {},
           error(err) {},
         });
+    }
+  }
+
+  private showErrorComponent(message: string) {
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear();
+
+    const componentRef = hostViewContainerRef.createComponent(AlertComponent);
+    componentRef.instance.message = message;
+    componentRef.instance.alertColor = 'bg-danger';
+
+    this.closeAlertSub = componentRef.instance.closeModal.subscribe(() => {
+      this.closeAlertSub.unsubscribe();
+      hostViewContainerRef.clear();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.closeAlertSub) {
+      this.closeAlertSub.unsubscribe();
     }
   }
 }

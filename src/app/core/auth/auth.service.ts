@@ -38,6 +38,7 @@ export class AuthService {
       .pipe(
         catchError(this.errorHandler),
         tap((data) => {
+          console.log(data);
           if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('authData', JSON.stringify(data));
           }
@@ -47,16 +48,23 @@ export class AuthService {
             data.idToken,
             data.expiresIn
           );
-          // this.user.next(data);
         })
       );
   }
 
   autoLogin() {
     if (isPlatformBrowser(this.platformId)) {
-      this.authData = JSON.parse(localStorage.getItem('authData')!);
-      if (this.authData) {
-        this.user.next(this.authData);
+      let storedData = localStorage.getItem('authData');
+      if (storedData) {
+        this.authData = JSON.parse(storedData!);
+        this.user.next(
+          new User(
+            this.authData.email,
+            this.authData.id,
+            this.authData._token,
+            new Date(this.authData._tokenExpirationDate)
+          )
+        );
       }
     }
   }
@@ -95,18 +103,25 @@ export class AuthService {
         })
       );
   }
+
   signOut() {
     if (isPlatformBrowser(this.platformId)) {
       this.user.next(null);
       this.router.navigate(['/auth']);
       localStorage.removeItem('authData');
-      if (this.tokenExpirationTimer) {
-        clearTimeout(this.tokenExpirationTimer);
-      }
+      this.clearTokenExpirationTimer();
+    }
+  }
+
+  private clearTokenExpirationTimer() {
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
       this.tokenExpirationTimer = null;
     }
   }
+
   autoSignOut(expirationDuration: number) {
+    this.clearTokenExpirationTimer();
     this.tokenExpirationTimer = setTimeout(
       () => this.signOut(),
       expirationDuration
@@ -145,9 +160,13 @@ export class AuthService {
     expiresIn: string
   ) {
     const expirationDate = new Date(new Date().getTime() + +expiresIn! * 1000);
+
     const user = new User(email, userId, token, expirationDate);
+
     localStorage.setItem('authData', JSON.stringify(user));
+
     this.user.next(user);
+
     this.autoSignOut(+expiresIn! * 1000);
   }
 }

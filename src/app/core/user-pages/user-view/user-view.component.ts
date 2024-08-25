@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AddUserModalComponent } from '../../../feature/add-user-modal/add-user-modal.component';
 import { UserCardComponent } from '../../../feature/user-card/user-card.component';
-import { HttpClient } from '@angular/common/http';
 import { userCreationData } from '../../../shared/userData.model';
 import { UsersService } from '../users.service';
 import { Subscription } from 'rxjs';
@@ -20,16 +19,26 @@ export class UserViewComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private usersService: UsersService) {}
 
   ngOnInit(): void {
+    this.usersService.getUsers().subscribe();
     this.userSub = this.usersService.users.subscribe({
-      next: (users) => {
-        for (const key in users) {
-          this.users = Object.values(users);
+      next: (users: any) => {
+        if (!users) {
+          return;
         }
+        this.users = Object.keys(users).map((key) => ({
+          ...users[key],
+          id: key,
+        }));
+        console.log(this.users);
       },
     });
   }
   OnClickUser(userId: string) {
     this.router.navigate(['users', userId]);
+  }
+  onPushUser(data: any) {
+    this.users?.push(data);
+    console.log(this.users);
   }
   ngOnDestroy(): void {
     this.userSub.unsubscribe();

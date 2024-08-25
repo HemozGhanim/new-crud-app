@@ -19,8 +19,7 @@ export class AppComponent implements OnInit {
   //constructor
   constructor(
     private authService: AuthService,
-    private breakpointObserver: BreakpointObserver,
-    private usersService: UsersService
+    private breakpointObserver: BreakpointObserver
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +29,6 @@ export class AppComponent implements OnInit {
       .subscribe((result) => {
         this.isSmallScreen = result.matches;
       });
-    this.usersService.getUsers().subscribe();
   }
   handleSideBarWidth(sideBarChildWidth: number) {
     this.sideBarWidth = sideBarChildWidth;

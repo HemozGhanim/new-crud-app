@@ -28,7 +28,7 @@
         <form [formGroup]="createUserData">
           <div class="row">
             <div class="mb-3 col col-6">
-              <label for="idFormControlInput" class="form-label">ID</label>
+              <label for="userid" class="form-label">ID</label>
               <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">N-</span>
                 <input
@@ -44,30 +44,34 @@
                       userid.invalid && (userid.dirty || userid.touched)
                   }"
                 />
-              </div>
-
-              @if(userid.invalid && userid.touched){
-              <div class="invalid-feedback">
-                @if(userid.errors?.['required']){
-                <div class="ps-2 text-capitalize">* Please enter user id.</div>
-                } @if(userid.errors?.['pattern']){
-                <div class="ps-2 text-capitalize">
-                  * Please enter numbers only.
+                @if(userid.invalid && userid.touched){
+                <div class="invalid-feedback">
+                  @if(userid.errors?.['required']){
+                  <div class="ps-2 text-capitalize">
+                    * Please enter user id.
+                  </div>
+                  } @if(userid.errors?.['pattern']){
+                  <div class="ps-2 text-capitalize">
+                    * Please enter numbers only.
+                  </div>
+                  }@if(userid.hasError('idExists')){
+                  <div class="ps-2 text-capitalize">
+                    * this ID is Already Exist
+                  </div>
+                  }
                 </div>
                 }
               </div>
-              }
             </div>
             <div class="mb-3 col col-6">
-              <label for="nameFormControleInput" class="form-label"
-                >User Name</label
-              >
+              <label for="userName" class="form-label">User Name</label>
               <input
                 type="text"
                 class="form-control"
                 id="userName"
                 formControlName="User_Name"
                 placeholder="John Doe"
+                autocomplete="userName"
                 [class]="{
                   'is-invalid':
                     userName.invalid && (userName.dirty || userName.touched)
@@ -92,9 +96,7 @@
               }
             </div>
             <div class="mb-3 col col-12">
-              <label for="emailFormControlInput" class="form-label"
-                >Email address</label
-              >
+              <label for="user-email" class="form-label">Email address</label>
               <input
                 type="email"
                 class="form-control"
@@ -120,9 +122,7 @@
               }
             </div>
             <div class="mb-3 col col-6">
-              <label for="nameFormControleInput" class="form-label"
-                >Frist Name</label
-              >
+              <label for="user_frist_name" class="form-label">Frist Name</label>
               <input
                 type="text"
                 class="form-control"
@@ -153,9 +153,7 @@
               }
             </div>
             <div class="mb-3 col col-6">
-              <label for="nameFormControleInput" class="form-label"
-                >Last Name</label
-              >
+              <label for="user_Last_Name" class="form-label">Last Name</label>
               <input
                 type="text"
                 class="form-control"
@@ -186,9 +184,7 @@
               }
             </div>
             <div class="mb-3 col col-6">
-              <label for="nameFormControleInput" class="form-label"
-                >Phone</label
-              >
+              <label for="user_Phone_Number" class="form-label">Phone</label>
               <input
                 type="tel"
                 class="form-control"
@@ -216,10 +212,8 @@
               }
             </div>
             <div class="mb-3 col col-6">
-              <label for="nameFormControleInput" class="form-label"
-                >Gender</label
-              >
-              <div class="pt-2">
+              <label class="form-label">Gender</label>
+              <div class="pt-2" id="GenderGroup">
                 <div class="form-check d-inline-block">
                   <input
                     class="form-check-input"
@@ -233,9 +227,7 @@
                         gender.invalid && (gender.dirty || gender.touched)
                     }"
                   />
-                  <label class="form-check-label" for="MaleGender">
-                    Male
-                  </label>
+                  <label class="MaleGender" for="MaleGender"> Male </label>
                 </div>
                 <div class="form-check d-inline-block ms-3">
                   <input

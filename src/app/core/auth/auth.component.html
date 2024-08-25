@@ -1,3 +1,4 @@
+<ng-template appPlaceHolder></ng-template>
 <div class="d-flex full-height align-items-center">
   <div class="form-signin m-auto">
     @if(isLogin){
@@ -22,7 +23,7 @@
               LoginEmail?.invalid && (LoginEmail?.dirty || LoginEmail?.touched)
           }"
         />
-        <label for="floatingInput">Email address</label>
+        <label for="LoginEmail">Email address</label>
         @if(LoginEmail?.invalid && LoginEmail?.touched){
         <div class="invalid-feedback">
           @if(LoginEmail?.errors?.['required']){
@@ -45,11 +46,12 @@
           placeholder="Password"
           formControlName="password"
           #passwordInput
+          autocomplete="password"
           [class]="{
             'is-invalid': LoginPassword?.invalid && LoginPassword?.touched
           }"
         />
-        <label for="floatingPassword">Password</label>
+        <label for="LoginPassword">Password</label>
         <div class="showPasswordIcon p-2">
           <i
             class="fa-solid fa-lg"
@@ -111,7 +113,7 @@
             'is-invalid': SignUpEmail?.invalid && SignUpEmail?.touched
           }"
         />
-        <label for="floatingInput ">Email address</label>
+        <label for="SignUpEmail ">Email address</label>
         <div class="invalid-feedback">
           @if(SignUpEmail?.errors?.['required']){
           <div class="ps-2 text-capitalize">
@@ -137,7 +139,7 @@
             'is-invalid': SignUpPassword?.invalid && SignUpPassword?.touched
           }"
         />
-        <label for="floatingPassword">Password</label>
+        <label for="SignUpPassword">Password</label>
         <div class="showPasswordIcon p-2">
           <i
             class="fa-solid fa-lg"
@@ -170,7 +172,7 @@
             'is-invalid': SignUpRePassword?.invalid && SignUpRePassword?.touched
           }"
         />
-        <label for="floatingPassword ">Re-Password</label>
+        <label for="SignUpRePassword ">Re-Password</label>
         <div class="showPasswordIcon p-2">
           <i
             class="fa-solid fa-lg"

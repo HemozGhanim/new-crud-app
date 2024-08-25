@@ -7,3 +7,6 @@ export interface userCreationData {
   Phone_Number: string;
   gender: string;
 }
+export interface unKnownUser {
+  [key: string]: userCreationData;
+}

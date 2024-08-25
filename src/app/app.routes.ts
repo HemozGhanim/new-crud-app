@@ -50,20 +50,11 @@ export const routes: Routes = [
       },
     ],
   },
-  // {
-  //   path: 'users/:id',
-  //   loadComponent: () =>
-  //     import('./core/user-component/user-component.component').then(
-  //       (m) => m.UserComponentComponent
-  //     ),
-  //   canActivate: [AuthGuard],
-  // },
-  // {
-  //   path: ':id/edit',
-  //   loadComponent: () =>
-  //     import('./core/user-edit-component/user-edit-component.component').then(
-  //       (m) => m.UserEditComponentComponent
-  //     ),
-  //   canActivate: [AuthGuard],
-  // },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./core/not-found/not-found.component').then(
+        (m) => m.NotFoundComponent
+      ),
+  },
 ];

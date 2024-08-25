@@ -1,0 +1,33 @@
+<div
+  class="modal modal-sheet position-absolute top-0 start-0 position-static d-block bg-body-secondary bg-opacity-50 p-4 py-md-5"
+  id="exampleModal"
+  tabindex="-1"
+>
+  <div
+    class="modal-dialog d-flex justify-content-center align-items-center h-100"
+    role="document"
+  >
+    <div
+      class="modal-content bg-opacity-50 rounded-4 shadow"
+      [class]="alertColor"
+    >
+      <div class="modal-header py-2">
+        <p class="lead mb-0 fw-bold text-center w-100">
+          {{ message }}
+        </p>
+      </div>
+      <div
+        class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0"
+      >
+        <button
+          type="button"
+          class="btn btn-lg btn-dark"
+          data-bs-dismiss="modal"
+          (click)="onCloseModel()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

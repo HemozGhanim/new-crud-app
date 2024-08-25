@@ -1,43 +1,34 @@
-import {
-  Component,
-  ElementRef,
-  input,
-  OnChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, output, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   FormsModule,
-  PatternValidator,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { userCreationData } from '../../shared/userData.model';
 import { UsersService } from '../../core/user-pages/users.service';
 import { customEmailValidator } from '../../core/auth/email.validator';
-import { find, map } from 'rxjs';
+import { JsonPipe } from '@angular/common';
+import { userKey } from '../../core/user-pages/userKey';
 
 @Component({
   selector: 'app-add-user-modal',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, JsonPipe],
   templateUrl: './add-user-modal.component.html',
   styleUrl: './add-user-modal.component.scss',
 })
 export class AddUserModalComponent {
   constructor(private usersService: UsersService) {}
-  @ViewChild('modal') modalElement!: ElementRef;
-  backdropElement!: any;
 
-  // ngAfterViewInit() {
-  //   this.backdropElement = document.getElementsByClassName('.modal-backdrop');
-  //   console.log(this.backdropElement);
-  // }
-  // ngOnChanges(): void {
-  //   //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-  //   //Add '${implements OnChanges}' to the class.
-  // }
+  pushUser = output<userCreationData>();
+
+  @ViewChild('modal') modalElement!: ElementRef;
+
+  backdropElement!: any;
+  
+  userData: userCreationData[] = [];
   createUserData = new FormGroup({
     id: new FormControl<string | null>(null, [
       Validators.required,
@@ -71,22 +62,27 @@ export class AddUserModalComponent {
     ]),
     gender: new FormControl('male', [Validators.required]),
   });
+
   checkId() {
-    console.log('test');
     const inputId = 'N-' + this.createUserData.get('id')?.value;
     if (inputId) {
-      this.usersService.users
-        .pipe(map((users) => users?.id === inputId))
-        .subscribe((existingUser) => {
-          console.log(existingUser);
-          if (existingUser) {
-            console.log('exist');
-          } else {
-            throw new Error('Not exist');
+      this.usersService.users.subscribe({
+        next: (users) => {
+          for (const key in users) {
+            this.userData = Object.values(users);
           }
-        });
+          const idExists = this.userData.find((user) => user.id === inputId);
+          if (idExists) {
+            this.createUserData.controls['id'].setErrors({ idExists: true });
+            console.log('Id already exists');
+          } else {
+            this.createUserData.controls['id'].setErrors(null); // Clear errors if id doesn't exist
+          }
+        },
+      });
     }
   }
+
   createData() {
     this.usersService
       .createUser({
@@ -98,13 +94,21 @@ export class AddUserModalComponent {
         Phone_Number: this.createUserData.value.Phone_Number!,
         User_Name: this.createUserData.value.User_Name!,
       })
-      .subscribe((data) => {
-        this.usersService.getUsers().subscribe();
-        this.clearData();
+      .subscribe((data: userKey) => {
         console.log(data);
+        this.pushUser.emit({
+          email: this.createUserData.value.email!,
+          First_Name: this.createUserData.value.First_Name!,
+          gender: this.createUserData.value.gender!,
+          id: data.name,
+          Last_Name: this.createUserData.value.Last_Name!,
+          Phone_Number: this.createUserData.value.Phone_Number!,
+          User_Name: this.createUserData.value.User_Name!,
+        });
+        this.clearData();
       });
-    console.log(this.createUserData.value);
   }
+
   get userid() {
     return this.createUserData.get('id')!;
   }
@@ -143,10 +147,7 @@ export class AddUserModalComponent {
       backgroundElement.setAttribute('aria-hidden', 'true');
     }
     this.backdropElement = document.getElementsByClassName('modal-backdrop');
-    console.log(this.backdropElement);
     if (this.backdropElement) {
-      // this.backdropElement[0].style.display = 'none';
-      // this.backdropElement[0].classList.remove('show');
       this.backdropElement[0].remove();
     }
     this.createUserData.reset();
