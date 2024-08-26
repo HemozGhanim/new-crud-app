@@ -13,7 +13,7 @@ import { userCreationData } from '../../../shared/userData.model';
 })
 export class UserComponentComponent implements OnInit {
   id!: any;
-  userData!: userCreationData;
+  userData!: userCreationData | null;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -27,20 +27,15 @@ export class UserComponentComponent implements OnInit {
         this.id = params['id'];
       },
     });
-    this.usersService.getUserById(this.id).subscribe({
-      next: (users: any) => {
-        for (const key in users) {
-          if (users[key].id == this.id) {
-            this.userData = users[key];
-          }
-        }
-      },
-    });
+    this.userData = history.state.data;
   }
   goBack() {
     this.location.back();
   }
-  OnClickEdit(userId: number) {
-    this.router.navigate(['edit'], { relativeTo: this.route });
+  OnClickEdit() {
+    this.router.navigate(['edit'], {
+      relativeTo: this.route,
+      state: { data: this.userData },
+    });
   }
 }

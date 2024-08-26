@@ -19,8 +19,8 @@
     @if(users != null){ @for (user of users; track $index) {
     <div class="col col-lg-3 my-2">
       <app-user-card
-        [userData]="user"
-        (click)="OnClickUser(user.id)"
+        [userDataCard]="user"
+        (click)="OnClickUser(user.id!)"
       ></app-user-card>
     </div>
     } } @else {

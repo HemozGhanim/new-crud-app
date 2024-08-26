@@ -5,7 +5,7 @@
   </a>
 </div>
 <section class="vh-100" style="background-color: #f4f5f7">
-  <div class="container py-5 h-100">
+  <div class="container px-0 py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-lg-6 mb-4 mb-lg-0">
         <div class="card mb-3" style="border-radius: 0.5rem">
@@ -23,11 +23,11 @@
                 class="img-fluid img-thumbnail my-5 rounded-circle border-2 bg-transparent border-white"
                 style="width: 120px"
               />
-              <h5>{{ userData.User_Name }}</h5>
-              <p>{{ userData.gender }}</p>
+              <h5>{{ userData?.User_Name }}</h5>
+              <p>{{ userData?.gender }}</p>
               <i
                 class="far fa-edit mb-5 editIcon rounded-circle"
-                (click)="OnClickEdit(id)"
+                (click)="OnClickEdit()"
               ></i>
             </div>
             <div class="col-md-8">
@@ -35,31 +35,30 @@
                 <h6>Information</h6>
                 <hr class="mt-0 mb-4" />
                 <div class="row pt-1">
-                  <div class="col-6 mb-3">
+                  <div class="col-12 mb-3">
                     <h6>Email</h6>
-                    <p class="text-muted">info &#64;example.com</p>
+                    <p class="text-muted">{{ userData?.email }}</p>
                   </div>
                   <div class="col-6 mb-3">
                     <h6>Phone</h6>
-                    <p class="text-muted">123 456 789</p>
+                    <p class="text-muted">{{ userData?.Phone_Number }}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6>gender</h6>
+                    <p class="text-muted">{{ userData?.gender }}</p>
                   </div>
                 </div>
-                <h6>Projects</h6>
+                <h6>Details</h6>
                 <hr class="mt-0 mb-4" />
                 <div class="row pt-1">
                   <div class="col-6 mb-3">
-                    <h6>Recent</h6>
-                    <p class="text-muted">Lorem ipsum</p>
+                    <h6>Frist Name</h6>
+                    <p class="text-muted">{{ userData?.First_Name }}</p>
                   </div>
                   <div class="col-6 mb-3">
-                    <h6>Most Viewed</h6>
-                    <p class="text-muted">Dolor sit amet</p>
+                    <h6>Last Name</h6>
+                    <p class="text-muted">{{ userData?.Last_Name }}</p>
                   </div>
-                </div>
-                <div class="d-flex justify-content-start">
-                  <a href="#!"><i class="fab fa-facebook-f fa-lg me-3"></i></a>
-                  <a href="#!"><i class="fab fa-twitter fa-lg me-3"></i></a>
-                  <a href="#!"><i class="fab fa-instagram fa-lg"></i></a>
                 </div>
               </div>
             </div>

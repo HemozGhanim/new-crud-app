@@ -8,6 +8,7 @@ import { UserModel } from './userModel';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { User } from './user.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -16,12 +17,15 @@ export class AuthService {
   user = new BehaviorSubject<User | null>(null);
   authData!: User;
   private tokenExpirationTimer: any;
-
+  userID!: string;
   constructor(
     private http: HttpClient,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private toastr: ToastrService
+  ) {
+    this.autoLogin();
+  }
 
   login(email: string, password: string) {
     let body: UserModel = {
@@ -36,37 +40,19 @@ export class AuthService {
         body
       )
       .pipe(
-        catchError(this.errorHandler),
+        catchError((error) => this.errorHandler(error)),
         tap((data) => {
-          console.log(data);
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('authData', JSON.stringify(data));
-          }
-          this.handleAuth(
-            data.email,
-            data.localId,
-            data.idToken,
-            data.expiresIn
-          );
+          console.log(this.userID);
+
+          this.handleLoginSuccessResponse(data);
+          console.log(data.localId);
+          console.log(this.userID);
+          data.localId === this.userID
+            ? console.log('equal')
+            : console.log('not equal');
+          this.userID = data.localId;
         })
       );
-  }
-
-  autoLogin() {
-    if (isPlatformBrowser(this.platformId)) {
-      let storedData = localStorage.getItem('authData');
-      if (storedData) {
-        this.authData = JSON.parse(storedData!);
-        this.user.next(
-          new User(
-            this.authData.email,
-            this.authData.id,
-            this.authData._token,
-            new Date(this.authData._tokenExpirationDate)
-          )
-        );
-      }
-    }
   }
 
   signup(email: string, password: string) {
@@ -81,42 +67,39 @@ export class AuthService {
         body
       )
       .pipe(
-        catchError(this.errorHandler),
-        tap((data) => {
-          const expirationDate = new Date(
-            new Date().getTime() + +data.expiresIn! * 1000
-          );
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem(
-              'authData',
-              JSON.stringify(
-                new User(data.email, data.localId, data.idToken, expirationDate)
-              )
-            );
-          }
-          this.handleAuth(
-            data.email,
-            data.localId,
-            data.idToken,
-            data.expiresIn
-          );
-        })
+        catchError((error) => this.errorHandler(error)),
+        tap(this.handleSignUpSuccessResponse.bind(this))
       );
+  }
+
+  autoLogin() {
+    if (isPlatformBrowser(this.platformId)) {
+      let storedData = localStorage.getItem('authData');
+      if (storedData) {
+        this.authData = JSON.parse(storedData!);
+        this.userID = this.authData.id;
+        this.user.next(
+          new User(
+            this.authData.email,
+            this.authData.id,
+            this.authData._token,
+            new Date(this.authData._tokenExpirationDate)
+          )
+        );
+      }
+    }
   }
 
   signOut() {
     if (isPlatformBrowser(this.platformId)) {
       this.user.next(null);
+      console.log(this.userID);
+      this.userID = null!;
+      console.log(this.userID);
       this.router.navigate(['/auth']);
       localStorage.removeItem('authData');
       this.clearTokenExpirationTimer();
-    }
-  }
-
-  private clearTokenExpirationTimer() {
-    if (this.tokenExpirationTimer) {
-      clearTimeout(this.tokenExpirationTimer);
-      this.tokenExpirationTimer = null;
+      // this.user.unsubscribe();
     }
   }
 
@@ -127,10 +110,51 @@ export class AuthService {
       expirationDuration
     );
   }
+  private clearTokenExpirationTimer() {
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+      this.tokenExpirationTimer = null;
+    }
+  }
+
+  CheckExpirationDate() {
+    let exDate = this.authData ? this.authData._tokenExpirationDate : null;
+    if (new Date() > new Date(exDate!)) {
+      this.signOut();
+    }
+  }
+
+  private handleLoginSuccessResponse(data: AuthData) {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('authData', JSON.stringify(data));
+    }
+    this.handleAuth(data.email, data.localId, data.idToken, data.expiresIn);
+    this.userID = data.localId;
+    this.toastr.success('Authentication successful');
+  }
+
+  private handleSignUpSuccessResponse(data: AuthData) {
+    const expirationDate = new Date(
+      new Date().getTime() + +data.expiresIn! * 1000
+    );
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(
+        'authData',
+        JSON.stringify(
+          new User(data.email, data.localId, data.idToken, expirationDate)
+        )
+      );
+    }
+    this.handleAuth(data.email, data.localId, data.idToken, data.expiresIn);
+    this.userID = data.localId;
+    this.toastr.success('Authentication successful');
+  }
 
   private errorHandler(errorRes: HttpErrorResponse) {
-    let errorMessage = 'An error occurred';
+    console.log(errorRes.error.error.message);
+    let errorMessage = 'An unexpected error occurred';
     if (!errorRes || !errorRes.error.error) {
+      this.toastr.error(errorMessage || 'An unexpected error occurred');
       return throwError(() => new Error(errorMessage));
     } else {
       switch (errorRes.error.error.message) {
@@ -147,8 +171,9 @@ export class AuthService {
           errorMessage = 'This user has been disabled';
           break;
         default:
-          errorMessage = 'An error occurred';
+          errorMessage = 'An unexpected error occurred';
       }
+      this.toastr.error(errorMessage || 'An unexpected error occurred');
       return throwError(() => new Error(errorMessage));
     }
   }

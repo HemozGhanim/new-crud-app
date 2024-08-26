@@ -27,13 +27,9 @@ export class AddUserModalComponent {
   @ViewChild('modal') modalElement!: ElementRef;
 
   backdropElement!: any;
-  
+
   userData: userCreationData[] = [];
   createUserData = new FormGroup({
-    id: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.pattern('^[a-zA-Z0-9 -]*$'),
-    ]),
     User_Name: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
@@ -62,34 +58,24 @@ export class AddUserModalComponent {
     ]),
     gender: new FormControl('male', [Validators.required]),
   });
+  CreateData = {
+    email: this.createUserData.value.email!,
+    First_Name: this.createUserData.value.First_Name!,
+    gender: this.createUserData.value.gender!,
+    id: '',
+    Last_Name: this.createUserData.value.Last_Name!,
+    Phone_Number: this.createUserData.value.Phone_Number!,
+    User_Name: this.createUserData.value.User_Name!,
+  };
 
-  checkId() {
-    const inputId = 'N-' + this.createUserData.get('id')?.value;
-    if (inputId) {
-      this.usersService.users.subscribe({
-        next: (users) => {
-          for (const key in users) {
-            this.userData = Object.values(users);
-          }
-          const idExists = this.userData.find((user) => user.id === inputId);
-          if (idExists) {
-            this.createUserData.controls['id'].setErrors({ idExists: true });
-            console.log('Id already exists');
-          } else {
-            this.createUserData.controls['id'].setErrors(null); // Clear errors if id doesn't exist
-          }
-        },
-      });
-    }
-  }
-
+  
   createData() {
     this.usersService
       .createUser({
         email: this.createUserData.value.email!,
         First_Name: this.createUserData.value.First_Name!,
         gender: this.createUserData.value.gender!,
-        id: 'N-' + this.createUserData.value.id!,
+        id: '',
         Last_Name: this.createUserData.value.Last_Name!,
         Phone_Number: this.createUserData.value.Phone_Number!,
         User_Name: this.createUserData.value.User_Name!,
@@ -109,9 +95,9 @@ export class AddUserModalComponent {
       });
   }
 
-  get userid() {
-    return this.createUserData.get('id')!;
-  }
+  // get userid() {
+  //   return this.createUserData.get('id')!;
+  // }
   get userName() {
     return this.createUserData.get('User_Name')!;
   }

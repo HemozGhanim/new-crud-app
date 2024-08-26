@@ -14,7 +14,6 @@ import { Subscription, tap } from 'rxjs';
 import { customEmailValidator } from './email.validator';
 import { PlaceHolderDirective } from '../../shared/placeholder/placeholder.directive';
 import { AlertComponent } from '../../shared/alert/alert.component';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth',
@@ -26,11 +25,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AuthComponent {
   //constructor
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private toastr: ToastrService
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   //placeHolderCreation
   @ViewChild(PlaceHolderDirective, { static: true })
@@ -128,13 +123,10 @@ export class AuthComponent {
         .subscribe({
           next: (value) => {
             this.loading = false;
-            this.toastr.success('Login Successfuly');
             this.router.navigate(['/']);
           },
           error: (err) => {
             this.loading = false;
-            console.log(err);
-            this.toastr.error(err);
           },
         });
     } else {

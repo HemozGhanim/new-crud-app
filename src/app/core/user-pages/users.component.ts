@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-users',

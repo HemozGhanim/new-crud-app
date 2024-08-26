@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.autoLogin();
+    this.authService.CheckExpirationDate();
     this.breakpointObserver
       .observe([Breakpoints.Handset])
       .subscribe((result) => {

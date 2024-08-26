@@ -9,5 +9,5 @@ import { userCreationData } from '../../shared/userData.model';
   styleUrl: './user-card.component.scss',
 })
 export class UserCardComponent {
-  @Input('userData') user!: userCreationData;
+  @Input('userDataCard') user!: userCreationData | null;
 }

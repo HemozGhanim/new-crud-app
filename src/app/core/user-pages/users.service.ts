@@ -23,21 +23,19 @@ export class UsersService {
   users = new BehaviorSubject<userCreationData | null>(null);
 
   createUser(user: userCreationData) {
-    return this.http
-      .post<userKey>(environment.databaseURL + 'users.json', user)
-      .pipe(
-        tap((data) => {
-          console.log(data);
-        })
-      );
+    return this.http.post<userKey>(
+      environment.databaseURL + `users/${this.authService.userID}.json`,
+      user
+    );
   }
 
   getUsers() {
     return this.http
-      .get<userCreationData>(environment.databaseURL + `users.json`)
+      .get<userCreationData>(
+        environment.databaseURL + `users/${this.authService.userID}.json`
+      )
       .pipe(
         tap((data) => {
-          console.log(data);
           this.users.next(data);
         })
       );

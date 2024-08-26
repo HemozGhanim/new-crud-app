@@ -13,7 +13,7 @@ import { UsersService } from '../users.service';
 })
 export class UserEditComponentComponent {
   id!: any;
-  userData!: userCreationData;
+  userData!: userCreationData | null;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -35,6 +35,7 @@ export class UserEditComponentComponent {
         }
       },
     });
+    this.userData = history.state.data;
   }
   goBack() {
     this.location.back();

@@ -28,7 +28,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.isAuth = false;
       }
     });
-    this.usersService.getUsers().subscribe();
   }
 
   toLogin() {
