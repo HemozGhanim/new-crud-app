@@ -4,24 +4,6 @@
 .takePadding {
   padding-left: 270px;
 }
-mat-sidenav-container {
-  height: 100vh;
-}
-
-mat-sidenav {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 250px;
-  background: #f8f9fa;
-  display: flex;
-  flex-direction: column;
-}
-
-mat-sidenav-content {
-  margin-left: 250px; /* Match the width of the sidenav */
-  padding: 16px;
-}
 
 .menu-button {
   display: none;
@@ -36,20 +18,14 @@ mat-sidenav-content {
   .menu-button {
     display: block;
   }
-
-  mat-sidenav-content {
-    margin-left: 0; /* No margin for small screens */
-  }
 }
 
 .main-content {
-  margin-left: 50px; /* Adjust this value based on your sidebar width */
+  overflow-y: scroll;
 }
+
 .e-sidebar {
-  height: 100%;
-  overflow: auto;
-  position: fixed;
+  height: 100vh;
   top: 0;
   left: 0;
-  z-index: 99999;
 }

@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService {
+export class ApiAuthService {
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   // Generic GET request
@@ -58,19 +58,30 @@ export class ApiService {
   }
 
   // Error handler
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error occurred';
-
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error
-      errorMessage = `Error: ${error.error.message}`;
+  private handleError(errorRes: HttpErrorResponse) {
+    let errorMessage = 'An unexpected error occurred';
+    if (!errorRes || !errorRes.error.error) {
+      this.toastr.error(errorMessage || 'An unexpected error occurred');
+      return throwError(() => new Error(errorMessage));
     } else {
-      // Server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      switch (errorRes.error.error.message) {
+        case 'EMAIL_EXISTS':
+          errorMessage = 'This email already exists';
+          break;
+        case 'EMAIL_NOT_FOUND':
+          errorMessage = 'This email does not exist';
+          break;
+        case 'INVALID_PASSWORD':
+          errorMessage = 'This password is not correct';
+          break;
+        case 'USER_DISABLED':
+          errorMessage = 'This user has been disabled';
+          break;
+        default:
+          errorMessage = 'An unexpected error occurred';
+      }
+      this.toastr.error(errorMessage || 'An unexpected error occurred');
+      return throwError(() => new Error(errorMessage));
     }
-
-    // Optionally log the error to the console or send it to a logging service
-    this.toastr.error(errorMessage || 'An unexpected error occurred');
-    return throwError(() => new Error(errorMessage));
   }
 }

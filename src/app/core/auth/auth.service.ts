@@ -9,6 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { User } from './user.model';
 import { ToastrService } from 'ngx-toastr';
+import { ApiAuthService } from '../../shared/Api-Auth-Services.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,8 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private api_auth_handler: ApiAuthService
   ) {
     this.autoLogin();
   }
@@ -33,23 +35,13 @@ export class AuthService {
       password: password,
       returnSecureToken: true,
     };
+    this.userID = '';
 
-    return this.http
-      .post<AuthData>(
-        environment.authDomain + 'key=' + environment.apiKey,
-        body
-      )
+    return this.api_auth_handler
+      .post<AuthData>(environment.authDomain, body)
       .pipe(
-        catchError((error) => this.errorHandler(error)),
         tap((data) => {
-          console.log(this.userID);
-
           this.handleLoginSuccessResponse(data);
-          console.log(data.localId);
-          console.log(this.userID);
-          data.localId === this.userID
-            ? console.log('equal')
-            : console.log('not equal');
           this.userID = data.localId;
         })
       );
@@ -61,14 +53,15 @@ export class AuthService {
       password: password,
       returnSecureToken: true,
     };
-    return this.http
-      .post<AuthData>(
-        environment.signUpDomain + 'key=' + environment.apiKey,
-        body
-      )
+    this.userID = '';
+
+    return this.api_auth_handler
+      .post<AuthData>(environment.signUpDomain, body)
       .pipe(
-        catchError((error) => this.errorHandler(error)),
-        tap(this.handleSignUpSuccessResponse.bind(this))
+        tap((data) => {
+          this.handleSignUpSuccessResponse(data);
+          this.userID = data.localId;
+        })
       );
   }
 
@@ -93,9 +86,7 @@ export class AuthService {
   signOut() {
     if (isPlatformBrowser(this.platformId)) {
       this.user.next(null);
-      console.log(this.userID);
       this.userID = null!;
-      console.log(this.userID);
       this.router.navigate(['/auth']);
       localStorage.removeItem('authData');
       this.clearTokenExpirationTimer();
@@ -109,6 +100,15 @@ export class AuthService {
       () => this.signOut(),
       expirationDuration
     );
+  }
+
+  isAuthenticated(): boolean {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('authData');
+      return !!token;
+    } else {
+      return false;
+    }
   }
   private clearTokenExpirationTimer() {
     if (this.tokenExpirationTimer) {
@@ -125,15 +125,16 @@ export class AuthService {
   }
 
   private handleLoginSuccessResponse(data: AuthData) {
+    this.toastr.success('Authentication successful');
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('authData', JSON.stringify(data));
     }
     this.handleAuth(data.email, data.localId, data.idToken, data.expiresIn);
     this.userID = data.localId;
-    this.toastr.success('Authentication successful');
   }
 
   private handleSignUpSuccessResponse(data: AuthData) {
+    this.toastr.success('Authentication successful');
     const expirationDate = new Date(
       new Date().getTime() + +data.expiresIn! * 1000
     );
@@ -147,35 +148,6 @@ export class AuthService {
     }
     this.handleAuth(data.email, data.localId, data.idToken, data.expiresIn);
     this.userID = data.localId;
-    this.toastr.success('Authentication successful');
-  }
-
-  private errorHandler(errorRes: HttpErrorResponse) {
-    console.log(errorRes.error.error.message);
-    let errorMessage = 'An unexpected error occurred';
-    if (!errorRes || !errorRes.error.error) {
-      this.toastr.error(errorMessage || 'An unexpected error occurred');
-      return throwError(() => new Error(errorMessage));
-    } else {
-      switch (errorRes.error.error.message) {
-        case 'EMAIL_EXISTS':
-          errorMessage = 'This email already exists';
-          break;
-        case 'EMAIL_NOT_FOUND':
-          errorMessage = 'This email does not exist';
-          break;
-        case 'INVALID_PASSWORD':
-          errorMessage = 'This password is not correct';
-          break;
-        case 'USER_DISABLED':
-          errorMessage = 'This user has been disabled';
-          break;
-        default:
-          errorMessage = 'An unexpected error occurred';
-      }
-      this.toastr.error(errorMessage || 'An unexpected error occurred');
-      return throwError(() => new Error(errorMessage));
-    }
   }
 
   private handleAuth(

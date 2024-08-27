@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -23,9 +23,15 @@ import { AlertComponent } from '../../shared/alert/alert.component';
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit {
   //constructor
   constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/']);
+    }
+  }
 
   //placeHolderCreation
   @ViewChild(PlaceHolderDirective, { static: true })
@@ -130,19 +136,21 @@ export class AuthComponent {
           },
         });
     } else {
+      this.loading = true;
       this.authService
         .signup(
           this.authSignUpForm.value.email as string,
           this.authSignUpForm.value.password as string
         )
-        .pipe(
-          tap(() => {
-            this.router.navigate(['/']);
-          })
-        )
+        .pipe(tap(() => {}))
         .subscribe({
-          next(value) {},
-          error(err) {},
+          next: (value) => {
+            this.loading = false;
+            this.router.navigate(['/']);
+          },
+          error: (err) => {
+            this.loading = false;
+          },
         });
     }
   }

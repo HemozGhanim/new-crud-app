@@ -1,4 +1,4 @@
-<div class="w-100">
+<div class="w-100 vh-100">
   <div class="w-100 p-2 bg-primary text-white">
     <i class="fa fa-users mx-2"></i>
     <p class="lead m-0 fw-bold d-inline-block">Users</p>
@@ -15,8 +15,13 @@
       Add <i class="fa-sharp fa-solid fa-plus"></i>
     </button>
   </div>
-  <div class="row p-2">
-    @if(users != null){ @for (user of users; track $index) {
+  <div class="row p-2 position-relative">
+    @if(loading == true ){
+    <div class="col col-12 text-center pt-3">
+      <i class="fa-solid fa-spinner fa-spin fa-2xl" style="color: #3b62d8"></i>
+    </div>
+    } @else{ @if(users != null){ @for (user of users; track $index) {
+    <!-- if data lodaing -->
     <div class="col col-lg-3 my-2">
       <app-user-card
         [userDataCard]="user"
@@ -25,7 +30,7 @@
     </div>
     } } @else {
     <div class="col col-12 text-center h-100">no users ....</div>
-    }
+    } }
   </div>
 </div>
 <app-add-user-modal (pushUser)="onPushUser($event)"></app-add-user-modal>

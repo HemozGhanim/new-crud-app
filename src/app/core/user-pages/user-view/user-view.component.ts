@@ -17,7 +17,8 @@ export class UserViewComponent implements OnInit, OnDestroy {
   users!: userCreationData[] | null;
   userSub!: Subscription;
   userData!: userCreationData | null;
-
+  getUsers!: Subscription;
+  loading: boolean = true;
   constructor(
     private router: Router,
     private usersService: UsersService,
@@ -26,7 +27,7 @@ export class UserViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.users = null;
-    this.usersService.getUsers().subscribe();
+    this.getUsers = this.usersService.getUsers().subscribe();
     this.userSub = this.usersService.users.subscribe({
       next: (users: any) => {
         if (!users) {
@@ -36,6 +37,10 @@ export class UserViewComponent implements OnInit, OnDestroy {
           ...users[key],
           id: key,
         }));
+        this.loading = false;
+      },
+      error: (err) => {
+        this.loading = false;
       },
     });
   }
@@ -51,6 +56,7 @@ export class UserViewComponent implements OnInit, OnDestroy {
     this.users = [...(this.users || []), data];
   }
   ngOnDestroy(): void {
+    this.getUsers.unsubscribe();
     this.userSub.unsubscribe();
   }
 }

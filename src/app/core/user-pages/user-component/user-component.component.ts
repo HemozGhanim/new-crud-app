@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from '../users.service';
 import { userCreationData } from '../../../shared/userData.model';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-user-component',
@@ -22,15 +23,31 @@ export class UserComponentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe({
-      next: (params) => {
-        this.id = params['id'];
-      },
-    });
+    this.route.params
+      .pipe(
+        switchMap((params) => {
+          this.id = params['id'];
+          return this.usersService.checkUser(this.id);
+        })
+      )
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+          console.log(typeof response);
+          if (response === null) {
+            console.log('User not found');
+          }
+        },
+        error: (err) => {
+          console.log('User not found 2');
+
+          this.router.navigate(['**']);
+        },
+      });
     this.userData = history.state.data;
   }
   goBack() {
-    this.location.back();
+    this.router.navigate(['users']);
   }
   OnClickEdit() {
     this.router.navigate(['edit'], {

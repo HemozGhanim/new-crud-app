@@ -39,6 +39,7 @@ export const routes: Routes = [
             './core/user-pages/user-component/user-component.component'
           ).then((m) => m.UserComponentComponent),
         canActivate: [AuthGuard],
+        
       },
       {
         path: ':id/edit',

@@ -1,6 +1,8 @@
 <ng-template appPlaceHolder></ng-template>
-<div class="d-flex full-height align-items-center">
-  <div class="form-signin m-auto">
+<div
+  class="d-flex full-height col-11 mx-auto justify-content-center align-items-center"
+>
+  <div class="form-signin mx-2">
     @if(isLogin){
     <form [formGroup]="authLoginForm" (ngSubmit)="onSubmit()">
       <div class="w-100 d-flex justify-content-center">
@@ -199,7 +201,11 @@
         type="submit"
         [disabled]="!authSignUpForm.valid"
       >
+        @if (loading) {
+        <i class="fa-solid fa-spinner"></i>
+        } @else {
         {{ isLogin ? "Login" : "Sign-up" }}
+        }
       </button>
       <div class="text-center w-100 mt-4">
         <a

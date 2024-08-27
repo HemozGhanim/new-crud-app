@@ -68,7 +68,6 @@ export class AddUserModalComponent {
     User_Name: this.createUserData.value.User_Name!,
   };
 
-  
   createData() {
     this.usersService
       .createUser({
@@ -81,7 +80,6 @@ export class AddUserModalComponent {
         User_Name: this.createUserData.value.User_Name!,
       })
       .subscribe((data: userKey) => {
-        console.log(data);
         this.pushUser.emit({
           email: this.createUserData.value.email!,
           First_Name: this.createUserData.value.First_Name!,
@@ -95,9 +93,6 @@ export class AddUserModalComponent {
       });
   }
 
-  // get userid() {
-  //   return this.createUserData.get('id')!;
-  // }
   get userName() {
     return this.createUserData.get('User_Name')!;
   }
