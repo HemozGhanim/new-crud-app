@@ -8,14 +8,12 @@ import { provideRouter, ROUTER_CONFIGURATION } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import {
-  HTTP_INTERCEPTORS,
+  HttpClientModule,
   provideHttpClient,
   withFetch,
   withInterceptors,
-  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { MatNativeDateModule } from '@angular/material/core';
 import { authInterceptorInterceptor } from './core/auth/auth-interceptor.interceptor';
 import { provideToastr } from 'ngx-toastr';
 // import { AuthInterceptorService } from './core/auth/auth-interceptor-2.service';
@@ -31,7 +29,7 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([authInterceptorInterceptor])
     ),
     provideAnimations(),
-    importProvidersFrom(MatNativeDateModule),
+    importProvidersFrom(HttpClientModule),
     provideToastr(), // Toastr providers
   ],
 };

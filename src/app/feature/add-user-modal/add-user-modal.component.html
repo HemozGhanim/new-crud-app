@@ -22,6 +22,7 @@
           class="btn-close text-danger"
           data-bs-dismiss="modal"
           aria-label="Close"
+          (click)="clearData()"
         ></button>
       </div>
       <div class="modal-body text-capitalize">
@@ -35,6 +36,7 @@
                 id="user-email"
                 placeholder="john@gmail.com"
                 formControlName="email"
+                (ngModelChange)="checkValueIsExist('email', 'emailExists')"
                 [class]="{
                   'is-invalid': email.invalid && (email.dirty || email.touched)
                 }"
@@ -48,6 +50,10 @@
                 } @if(email.errors?.['invalidEmail']){
                 <div class="ps-2 text-capitalize">
                   * Please enter a valid email address.
+                </div>
+                } @if(email.errors?.['emailExists']){
+                <div class="ps-2 text-capitalize">
+                  * this email is already exist.
                 </div>
                 }
               </div>
@@ -124,6 +130,9 @@
                 formControlName="User_Name"
                 placeholder="John Doe"
                 autocomplete="userName"
+                (ngModelChange)="
+                  checkValueIsExist('User_Name', 'userNameExist')
+                "
                 [class]="{
                   'is-invalid':
                     userName.invalid && (userName.dirty || userName.touched)
@@ -142,6 +151,10 @@
                 } @if(userName.errors?.['maxlength']){
                 <div class="ps-2 text-capitalize">
                   * max Length is 50 characters.
+                </div>
+                } @if(userName.errors?.['userNameExist']){
+                <div class="ps-2 text-capitalize">
+                  * userName is Exist Already.
                 </div>
                 }
               </div>
@@ -231,7 +244,9 @@
           (click)="createData()"
           [disabled]="this.createUserData.invalid"
         >
-          Create
+          @if(loading){
+          <i class="fa-solid fa-spinner fa-spin"></i> Creating } @else{
+          <i class="fa-solid fa-user-plus"></i> Create}
         </button>
       </div>
     </div>

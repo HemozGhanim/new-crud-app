@@ -67,24 +67,6 @@ export class UserEditComponentComponent implements OnInit, OnDestroy {
     private tosetr: ToastrService
   ) {}
   ngOnInit(): void {
-    // this.route.params.subscribe({
-    //   next: (params) => {
-    //     this.id = params['id'];
-    //   },
-    // });
-    // this.userData = history.state.data;
-    // if (this.userData) {
-    //   this.userData.id = this.id;
-    // }
-    // this.formUserData.patchValue({
-    //   User_Name: this.userData?.User_Name,
-    //   email: this.userData?.email,
-    //   First_Name: this.userData?.First_Name,
-    //   Last_Name: this.userData?.Last_Name,
-    //   Phone_Number: this.userData?.Phone_Number,
-    //   gender: this.userData?.gender,
-    //   id: this.id,
-    // });
     this.userByIdSub = this.route.params
       .pipe(
         switchMap((params) => {
@@ -186,11 +168,13 @@ export class UserEditComponentComponent implements OnInit, OnDestroy {
     }
   }
   deleteUser() {
-    this.usersService.deleteUser(this.id).subscribe({
-      next: (res) => {
-        this.router.navigate(['users']);
-      },
-    });
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.usersService.deleteUser(this.id).subscribe({
+        next: (res) => {
+          this.router.navigate(['users']);
+        },
+      });
+    }
   }
   ngOnDestroy(): void {
     this.ChangedDataSub.unsubscribe();

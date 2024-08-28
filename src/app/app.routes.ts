@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { notAuthGuard } from './shared/notAuthGuard/not-auth.guard';
 import { AuthGuard } from './shared/authGuard/auth-guard.guard';
+import { UserExistsGuard } from './shared/guards/user-exists.guard';
 export const routes: Routes = [
   {
     path: '',
@@ -38,8 +39,7 @@ export const routes: Routes = [
           import(
             './core/user-pages/user-component/user-component.component'
           ).then((m) => m.UserComponentComponent),
-        canActivate: [AuthGuard],
-        
+        canActivate: [UserExistsGuard],
       },
       {
         path: ':id/edit',
@@ -52,10 +52,14 @@ export const routes: Routes = [
     ],
   },
   {
-    path: '**',
+    path: 'not-found',
     loadComponent: () =>
       import('./core/not-found/not-found.component').then(
         (m) => m.NotFoundComponent
       ),
+  },
+  {
+    path: '**',
+    redirectTo: '/not-found',
   },
 ];

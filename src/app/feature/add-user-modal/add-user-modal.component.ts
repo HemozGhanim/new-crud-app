@@ -20,9 +20,11 @@ import { userKey } from '../../core/user-pages/userKey';
   styleUrl: './add-user-modal.component.scss',
 })
 export class AddUserModalComponent {
+  [x: string]: any;
   constructor(private usersService: UsersService) {}
 
   pushUser = output<userCreationData>();
+  loading: boolean = false;
 
   @ViewChild('modal') modalElement!: ElementRef;
 
@@ -69,28 +71,39 @@ export class AddUserModalComponent {
   };
 
   createData() {
-    this.usersService
-      .createUser({
-        email: this.createUserData.value.email!,
-        First_Name: this.createUserData.value.First_Name!,
-        gender: this.createUserData.value.gender!,
-        id: '',
-        Last_Name: this.createUserData.value.Last_Name!,
-        Phone_Number: this.createUserData.value.Phone_Number!,
-        User_Name: this.createUserData.value.User_Name!,
-      })
-      .subscribe((data: userKey) => {
-        this.pushUser.emit({
+    if (this.createUserData.invalid) {
+      return;
+    } else {
+      this.loading = true;
+      this.usersService
+        .createUser({
           email: this.createUserData.value.email!,
           First_Name: this.createUserData.value.First_Name!,
           gender: this.createUserData.value.gender!,
-          id: data.name,
+          id: '',
           Last_Name: this.createUserData.value.Last_Name!,
           Phone_Number: this.createUserData.value.Phone_Number!,
           User_Name: this.createUserData.value.User_Name!,
+        })
+        .subscribe({
+          next: (data: userKey) => {
+            this.loading = false;
+            this.pushUser.emit({
+              email: this.createUserData.value.email!,
+              First_Name: this.createUserData.value.First_Name!,
+              gender: this.createUserData.value.gender!,
+              id: data.name,
+              Last_Name: this.createUserData.value.Last_Name!,
+              Phone_Number: this.createUserData.value.Phone_Number!,
+              User_Name: this.createUserData.value.User_Name!,
+            });
+            this.clearData();
+          },
+          error: (err) => {
+            this.loading = false;
+          },
         });
-        this.clearData();
-      });
+    }
   }
 
   get userName() {
@@ -131,6 +144,43 @@ export class AddUserModalComponent {
     if (this.backdropElement) {
       this.backdropElement[0].remove();
     }
-    this.createUserData.reset();
+    // Reset the form group
+    this.createUserData.reset(
+      {
+        User_Name: '',
+        email: '',
+        First_Name: '',
+        Last_Name: '',
+        Phone_Number: '',
+        gender: 'male',
+      },
+      {
+        emitEvent: true,
+      }
+    );
+
+    // Clear all errors
+    this.createUserData.clearValidators();
+    this.createUserData.updateValueAndValidity();
+  }
+
+  checkValueIsExist(fieldName: string, errorName: any) {
+    const fieldControl = this.createUserData.get(fieldName);
+    const fieldValue = fieldControl?.value;
+
+    this.usersService.users.subscribe({
+      next: (users: any) => {
+        for (const key in users) {
+          const user = users[key];
+          console.log(user[fieldName]);
+          console.log(fieldValue);
+          if (user[fieldName] === fieldValue) {
+            fieldControl?.setErrors({ [errorName]: true });
+          } else {
+            fieldControl?.setErrors(null);
+          }
+        }
+      },
+    });
   }
 }

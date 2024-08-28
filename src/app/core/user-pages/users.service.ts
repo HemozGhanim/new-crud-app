@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { BehaviorSubject, catchError, filter, map, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  filter,
+  map,
+  Observable,
+  tap,
+} from 'rxjs';
 import { unKnownUser, userCreationData } from '../../shared/userData.model';
 import { AuthService } from '../auth/auth.service';
 import { userKey } from './userKey';
@@ -56,19 +63,10 @@ export class UsersService {
       tap((data) => {})
     );
   }
-  checkUser(id: any) {
-    return this.api_service
-      .get(
-        environment.databaseURL + `users/${this.authService.userID}/${id}.json`
-      )
-      .pipe(
-        catchError((error) => {
-          return error;
-        }),
-        tap((response) => {
-          console.log(response);
-        })
-      );
+  checkUser(id: any): Observable<any> {
+    return this.api_service.get(
+      environment.databaseURL + `users/${this.authService.userID}/${id}.json`
+    );
   }
 
   updateUser(id: any, data: any) {
