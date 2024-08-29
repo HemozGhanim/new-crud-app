@@ -22,8 +22,7 @@ export class UsersService {
     private authService: AuthService,
     private api_service: ApiService,
     private toastr: ToastrService
-  ) { }
-
+  ) {}
 
   users = new BehaviorSubject<userCreationData | null>(null);
 
@@ -54,15 +53,8 @@ export class UsersService {
   }
 
   getUserById(id: any) {
-    return this.users.pipe(
-      map((data: any) => {
-        for (const key in data) {
-          if (key === id) {
-            return data[key];
-          }
-        }
-      }),
-      tap((data) => {})
+    return this.api_service.get<userCreationData>(
+      environment.databaseURL + `users/${this.authService.userID}/${id}.json`
     );
   }
 
