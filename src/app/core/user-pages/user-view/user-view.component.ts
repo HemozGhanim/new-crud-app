@@ -27,7 +27,11 @@ export class UserViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.users = null;
+
+
     this.getUsers = this.usersService.getUsers().subscribe();
+
+
     this.userSub = this.usersService.users.subscribe({
       next: (users: any) => {
         if (!users) {
@@ -55,6 +59,8 @@ export class UserViewComponent implements OnInit, OnDestroy {
   onPushUser(data: any) {
     this.users = [...(this.users || []), data];
   }
+
+  
   ngOnDestroy(): void {
     this.getUsers.unsubscribe();
     this.userSub.unsubscribe();

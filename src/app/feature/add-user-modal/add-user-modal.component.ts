@@ -164,6 +164,7 @@ export class AddUserModalComponent {
     this.createUserData.updateValueAndValidity();
   }
 
+  
   checkValueIsExist(fieldName: string, errorName: any) {
     const fieldControl = this.createUserData.get(fieldName);
     const fieldValue = fieldControl?.value;

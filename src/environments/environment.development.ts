@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiKey: 'AIzaSyCzBCPpGlVjQ2JvPfgl2-EpqmcX8MIxHGU',
+  apiKey: 'AIzaSyCzBCPpGlVjQ2JvPfgl2-EpqmcX8MIxHGU2',
   authDomain:
     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?',
   signUpDomain: 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?',

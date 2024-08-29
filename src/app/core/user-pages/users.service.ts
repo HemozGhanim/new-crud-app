@@ -22,7 +22,9 @@ export class UsersService {
     private authService: AuthService,
     private api_service: ApiService,
     private toastr: ToastrService
-  ) {}
+  ) { }
+
+
   users = new BehaviorSubject<userCreationData | null>(null);
 
   createUser(user: userCreationData) {
@@ -63,6 +65,7 @@ export class UsersService {
       tap((data) => {})
     );
   }
+
   checkUser(id: any): Observable<any> {
     return this.api_service.get(
       environment.databaseURL + `users/${this.authService.userID}/${id}.json`
