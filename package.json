@@ -4,10 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && npm run sentry:sourcemaps",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:new-crud-app": "node dist/new-crud-app/server/server.mjs"
+    "serve:ssr:new-crud-app": "node dist/new-crud-app/server/server.mjs",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org geekbox --project javascript-angular ./dist && sentry-cli sourcemaps upload --org geekbox --project javascript-angular ./dist"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +27,9 @@
     "@fortawesome/angular-fontawesome": "^0.15.0",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@popperjs/core": "^2.11.8",
+    "@sentry/angular": "^8.27.0",
+    "@sentry/cli": "^2.34.1",
+    "@sentry/tracing": "^7.114.0",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "cdbootstrap": "^1.3.4",

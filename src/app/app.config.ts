@@ -1,5 +1,6 @@
 import {
   ApplicationConfig,
+  ErrorHandler,
   importProvidersFrom,
   provideZoneChangeDetection,
 } from '@angular/core';
@@ -16,6 +17,7 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { authInterceptorInterceptor } from './core/auth/auth-interceptor.interceptor';
 import { provideToastr } from 'ngx-toastr';
+import { SentryErrorHandler } from '@sentry/angular';
 // import { AuthInterceptorService } from './core/auth/auth-interceptor-2.service';
 
 export const appConfig: ApplicationConfig = {
@@ -28,6 +30,10 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([authInterceptorInterceptor])
     ),
+    {
+      provide: ErrorHandler,
+      useValue: new SentryErrorHandler(),
+    },
     provideAnimations(),
     importProvidersFrom(HttpClientModule),
     provideToastr(), // Toastr providers
