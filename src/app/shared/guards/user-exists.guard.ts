@@ -6,14 +6,19 @@ import {
   Router,
 } from '@angular/router';
 import { Observable, of, catchError } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { UsersService } from '../../core/user-pages/users.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserExistsGuard implements CanActivate {
-  constructor(private usersService: UsersService, private router: Router) {}
+  constructor(
+    private usersService: UsersService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -27,12 +32,14 @@ export class UserExistsGuard implements CanActivate {
     }
 
     return this.usersService.checkUser(userId).pipe(
-      tap((response) => {
-        if (!response || Object.keys(response).length === 0) {
+      switchMap((user: any) => {
+        if (user) {
+          return of(true);
+        } else {
           this.router.navigate(['/not-found']);
+          return of(false);
         }
       }),
-      map((response) => !!response && Object.keys(response).length > 0),
       catchError((error) => {
         console.error('Error fetching user:', error);
         this.handleError(error);
@@ -42,8 +49,7 @@ export class UserExistsGuard implements CanActivate {
   }
 
   private handleError(error: any) {
-    // Handle different error scenarios
-    // e.g., network errors, unauthorized access, etc.
-    this.router.navigate(['/error']);
+    this.router.navigate(['/home']);
+    this.toastr.error('An error occurred while fetching user data.', 'Error');
   }
 }

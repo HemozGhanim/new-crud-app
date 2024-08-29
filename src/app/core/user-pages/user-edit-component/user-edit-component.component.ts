@@ -27,6 +27,7 @@ export class UserEditComponentComponent implements OnInit, OnDestroy {
   userByIdSub!: Subscription;
   disabled: boolean = true;
   private ChangedDataSub!: Subscription;
+  loading: boolean = true;
 
   formUserData = new FormGroup({
     id: new FormControl(''),
@@ -62,23 +63,17 @@ export class UserEditComponentComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location,
-    private usersService: UsersService,
-    private tosetr: ToastrService
+    private usersService: UsersService
   ) {}
   ngOnInit(): void {
-    this.userByIdSub = this.route.params
-      .pipe(
-        switchMap((params) => {
-          this.id = params['id'];
-          return this.usersService.getUsers();
-        }),
-        switchMap((users) => {
-          return this.usersService.getUserById(this.id);
-        })
-      )
-      .subscribe({
-        next: (user: any) => {
+    this.route.params.subscribe((params) => {
+      this.id = params['id'];
+    });
+
+    if (!this.userData) {
+      this.usersService.getUserById(this.id).subscribe({
+        next: (user) => {
+          this.loading = false;
           this.userData = user;
           if (this.userData) {
             this.userData.id = this.id;
@@ -93,10 +88,14 @@ export class UserEditComponentComponent implements OnInit, OnDestroy {
             id: this.id,
           });
         },
-        error: (err) => {
-          this.tosetr.error('Error:', err);
-        },
       });
+    } else {
+      this.loading = false;
+      this.userData = history.state.data;
+      if (this.userData) {
+        this.userData.id = this.id;
+      }
+    }
 
     this.ChangedDataSub = this.formUserData.valueChanges.subscribe(
       (changes) => {

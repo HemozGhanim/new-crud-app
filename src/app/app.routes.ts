@@ -39,7 +39,6 @@ export const routes: Routes = [
           import(
             './core/user-pages/user-component/user-component.component'
           ).then((m) => m.UserComponentComponent),
-        canActivate: [UserExistsGuard],
       },
       {
         path: ':id/edit',

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from '../users.service';
 import { userCreationData } from '../../../shared/userData.model';
-import { subscribe } from 'diagnostics_channel';
 
 @Component({
   selector: 'app-user-component',
@@ -14,6 +13,8 @@ import { subscribe } from 'diagnostics_channel';
 export class UserComponentComponent implements OnInit {
   id!: any;
   userData!: userCreationData | null;
+  loading: boolean = true;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -24,16 +25,16 @@ export class UserComponentComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.id = params['id'];
     });
-    if (this.userData) {
-      this.usersService.getUserById(this.id).subscribe(
-        (data: userCreationData) => {
+
+    if (!this.userData) {
+      this.usersService.getUserById(this.id).subscribe({
+        next: (data) => {
+          this.loading = false;
           this.userData = data;
         },
-        (error) => {
-          console.log(error);
-        }
-      );
+      });
     } else {
+      this.loading = false;
       this.userData = history.state.data;
     }
   }
